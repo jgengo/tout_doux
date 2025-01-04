@@ -14,6 +14,9 @@ const config: Config = {
       padding: "1.2rem",
     },
   	extend: {
+      fontSize: {
+        "xxs": "0.60rem",
+      },
       screens: {
         tall: { raw: "(min-height: 1000px)" },
       },
