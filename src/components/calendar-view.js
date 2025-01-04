@@ -34,7 +34,7 @@ export const CalendarView = ({ startDate, onDateChange }) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="mt-10 space-y-4">
       {/* Mobile View */}
       <div className="md:hidden">
         <AnimatePresence mode="wait">
