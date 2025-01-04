@@ -1,5 +1,6 @@
 import { format, addDays } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const CalendarView = ({ startDate }) => {
   const today = new Date();
@@ -95,12 +96,14 @@ export const CalendarView = ({ startDate }) => {
                 {day.dayName}
               </div>
               <div className="mt-4 space-y-1">
-                <div className="group relative rounded-md border-b py-1">
-                  <input
-                    type="checkbox"
-                    className="absolute -left-5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 cursor-pointer opacity-0 transition-opacity group-hover:opacity-100"
-                    aria-label="Complete task"
-                  />
+                <div className="group relative flex items-center rounded-md border-b py-1">
+                  <div className="absolute left-0 opacity-0 transition-opacity group-hover:opacity-100">
+                    <Checkbox
+                      id={`task-${index}`}
+                      aria-label="Complete task"
+                      className="-ml-6"
+                    />
+                  </div>
                   <div className="text-[0.88rem]">Task placeholder</div>
                 </div>
                 <div className="rounded-md border-b py-1">
