@@ -97,14 +97,16 @@ export const CalendarView = ({ startDate }) => {
               </div>
               <div className="mt-4 space-y-1">
                 <div className="group relative flex items-center rounded-md border-b py-1">
-                  <div className="absolute left-0 opacity-0 transition-opacity group-hover:opacity-100">
-                    <Checkbox
-                      id={`task-${index}`}
-                      aria-label="Complete task"
-                      className="-ml-6"
-                    />
+                  <div className="items-top absolute -left-5 flex opacity-0 transition-opacity group-hover:opacity-100">
+                    <Checkbox id={`task-${index}`} aria-label="Complete task" />
                   </div>
                   <div className="text-[0.88rem]">Task placeholder</div>
+                </div>
+                <div className="group relative flex items-center rounded-md border-b py-1">
+                  <div className="items-top absolute -left-5 flex opacity-0 transition-opacity group-hover:opacity-100">
+                    <Checkbox id={`task-${index}`} aria-label="Complete task" />
+                  </div>
+                  <div className="text-[0.88rem]">Another placeholder</div>
                 </div>
                 <div className="rounded-md border-b py-1">
                   <input
