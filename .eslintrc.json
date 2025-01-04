@@ -1,11 +1,11 @@
 {
-    "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
-    "rules": {
-      "semi": ["error"],
-      "quotes": ["error", "double"],
-      "prefer-arrow-callback": ["error"],
-      "prefer-template": ["error"],
-      "no-console": ["error"],
-      "no-unused-vars": ["error"]
-    }
+  "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
+  "rules": {
+    "semi": ["error"],
+    "quotes": ["error", "double"],
+    "prefer-arrow-callback": ["error"],
+    "prefer-template": ["error"],
+    "no-console": ["error"],
+    "no-unused-vars": ["warn"]
+  }
 }

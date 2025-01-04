@@ -1,7 +1,7 @@
 import { format, addDays } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 
-export const CalendarView = ({ startDate, onDateChange }) => {
+export const CalendarView = ({ startDate }) => {
   const today = new Date();
 
   // Generate 5 days starting from startDate

@@ -10,7 +10,7 @@ export default function Page() {
   return (
     <>
       <Navbar currentDate={startDate} onDateChange={setStartDate} />
-      <CalendarView startDate={startDate} onDateChange={setStartDate} />
+      <CalendarView startDate={startDate} />
     </>
   );
 }
