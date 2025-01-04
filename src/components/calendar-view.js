@@ -94,11 +94,25 @@ export const CalendarView = ({ startDate }) => {
               >
                 {day.dayName}
               </div>
-              <div className="mt-4 space-y-2">
-                <div className="rounded-md border-b py-2">
+              <div className="mt-4 space-y-1">
+                <div className="group relative rounded-md border-b py-1">
+                  <input
+                    type="checkbox"
+                    className="absolute -left-5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 cursor-pointer opacity-0 transition-opacity group-hover:opacity-100"
+                    aria-label="Complete task"
+                  />
+                  <div className="text-[0.88rem]">Task placeholder</div>
+                </div>
+                <div className="rounded-md border-b py-1">
                   <input
                     type="text"
-                    placeholder="Click text to edit"
+                    className="w-full bg-transparent p-1 text-sm focus:outline-none"
+                    aria-label={`Add todo for ${day.dayName}`}
+                  />
+                </div>
+                <div className="rounded-md border-b py-1">
+                  <input
+                    type="text"
                     className="w-full bg-transparent p-1 text-sm focus:outline-none"
                     aria-label={`Add todo for ${day.dayName}`}
                   />
