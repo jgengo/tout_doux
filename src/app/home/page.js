@@ -11,6 +11,7 @@ export default function Page() {
     <>
       <Navbar currentDate={startDate} onDateChange={setStartDate} />
       <CalendarView startDate={startDate} />
+      <div className="h-[200vh]"></div>
     </>
   );
 }
