@@ -7,58 +7,69 @@ import {
   Calendar,
 } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+
 type NavigationControlsProps = {
-  onDateChange: (date: Date) => void;
   currentDate: Date;
+  onDateChange: (date: Date) => void;
+};
+
+type NavigationButton = {
+  label: string;
+  icon: JSX.Element;
+  onClick: () => void;
 };
 
 const NavigationControls = ({
-  onDateChange,
   currentDate,
+  onDateChange,
 }: NavigationControlsProps) => {
-  const handlePreviousDay = () => onDateChange(addDays(currentDate, -1));
-  const handleNextDay = () => onDateChange(addDays(currentDate, 1));
-  const handlePreviousWeek = () => onDateChange(addDays(currentDate, -7));
-  const handleNextWeek = () => onDateChange(addDays(currentDate, 7));
-  const handleToday = () => onDateChange(new Date());
+  const handleDateChange = (daysToAdd: number) => () => {
+    onDateChange(addDays(currentDate, daysToAdd));
+  };
+
+  const navigationButtons: NavigationButton[] = [
+    {
+      label: "Previous week",
+      icon: <ChevronsLeft className="h-4 w-4" strokeWidth={3} />,
+      onClick: handleDateChange(-7),
+    },
+    {
+      label: "Previous day",
+      icon: <ChevronLeft className="h-4 w-4" strokeWidth={3} />,
+      onClick: handleDateChange(-1),
+    },
+    {
+      label: "Next day",
+      icon: <ChevronRight className="h-4 w-4" strokeWidth={3} />,
+      onClick: handleDateChange(1),
+    },
+    {
+      label: "Next week",
+      icon: <ChevronsRight className="h-4 w-4" strokeWidth={3} />,
+      onClick: handleDateChange(7),
+    },
+    {
+      label: "Go to today",
+      icon: <Calendar className="h-4 w-4" strokeWidth={3} />,
+      onClick: () => onDateChange(new Date()),
+    },
+  ];
 
   return (
-    <div className="flex items-center gap-2">
-      <button
-        onClick={handlePreviousWeek}
-        className="rounded-md px-1 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
-        aria-label="Previous week"
-      >
-        <ChevronsLeft className="h-4 w-4" strokeWidth={3} />
-      </button>
-      <button
-        onClick={handlePreviousDay}
-        className="rounded-md px-1 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
-        aria-label="Previous day"
-      >
-        <ChevronLeft className="h-4 w-4" strokeWidth={3} />
-      </button>
-      <button
-        onClick={handleNextDay}
-        className="rounded-md px-1 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
-        aria-label="Next day"
-      >
-        <ChevronRight className="h-4 w-4" strokeWidth={3} />
-      </button>
-      <button
-        onClick={handleNextWeek}
-        className="rounded-md px-1 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
-        aria-label="Next week"
-      >
-        <ChevronsRight className="h-4 w-4" strokeWidth={3} />
-      </button>
-      <button
-        onClick={handleToday}
-        className="rounded-md px-1 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
-        aria-label="Go to today"
-      >
-        <Calendar className="h-4 w-4" strokeWidth={2} />
-      </button>
+    <div className="flex items-center gap-1">
+      {navigationButtons.map(({ label, icon, onClick }) => (
+        <Button
+          key={label}
+          onClick={onClick}
+          aria-label={label}
+          size="icon"
+          variant="ghost"
+          className="text-gray-600/85 hover:bg-transparent hover:text-black"
+        >
+          {icon}
+        </Button>
+      ))}
     </div>
   );
 };
