@@ -37,7 +37,7 @@ const Navbar = ({ currentDate, onDateChange }: NavbarProps): JSX.Element => {
           <span className="text-xs">Search</span>
         </Button>
 
-        <h1 className="text-primary w-full text-center font-[family-name:var(--font-ibm-plex-sans)] text-lg font-bold uppercase tracking-tighter">
+        <h1 className="text-primary w-full text-center font-[family-name:var(--font-ibm-plex-sans)] font-bold uppercase tracking-tighter">
           ToutDoux
         </h1>
 

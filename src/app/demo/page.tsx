@@ -36,7 +36,7 @@ export default function Demo() {
       </div>
 
       <h2 className="mb-5 mt-10 text-2xl font-bold">Checkboxes</h2>
-      <div className="items-top flex space-x-2">
+      <div className="flex space-x-2">
         <Checkbox id="terms1" />
       </div>
     </div>
