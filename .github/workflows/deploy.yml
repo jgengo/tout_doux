@@ -23,6 +23,11 @@ jobs:
         run: |
           docker build \
             --build-arg NEXT_PUBLIC_BASE_URL=https://todo.jgengo.fr \
+            --build-arg MONGO_URI=${{ secrets.MONGO_URI }} \
+            --build-arg AUTH_SECRET=${{ secrets.AUTH_SECRET }} \
+            --build-arg RESEND_KEY=${{ secrets.RESEND_KEY }} \
+            --build-arg GOOGLE_ID=${{ secrets.GOOGLE_ID }} \
+            --build-arg GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }} \
             -t ghcr.io/${{ github.repository_owner }}/todo:latest .
 
       - name: Push Docker image
