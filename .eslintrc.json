@@ -5,7 +5,6 @@
     "quotes": ["error", "double"],
     "prefer-arrow-callback": ["error"],
     "prefer-template": ["error"],
-    "no-console": ["error"],
     "no-unused-vars": ["warn"]
   }
 }
