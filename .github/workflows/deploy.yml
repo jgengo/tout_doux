@@ -23,18 +23,10 @@ jobs:
         env:
           NEXT_PUBLIC_BASE_URL: https://todo.jgengo.fr
           MONGO_URI: ${{ secrets.MONGO_URI }}
-          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
-          RESEND_KEY: ${{ secrets.RESEND_KEY }}
-          GOOGLE_ID: ${{ secrets.GOOGLE_ID }}
-          GOOGLE_SECRET: ${{ secrets.GOOGLE_SECRET }}
         run: |
           docker build \
             --build-arg NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL} \
             --build-arg MONGO_URI=${MONGO_URI} \
-            --build-arg AUTH_SECRET=${AUTH_SECRET} \
-            --build-arg RESEND_KEY=${RESEND_KEY} \
-            --build-arg GOOGLE_ID=${GOOGLE_ID} \
-            --build-arg GOOGLE_SECRET=${GOOGLE_SECRET} \
             -t ghcr.io/${{ github.repository_owner }}/todo:latest .
 
       - name: Push Docker image
