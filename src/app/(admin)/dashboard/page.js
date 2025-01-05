@@ -19,7 +19,6 @@ const AddTaskForm = () => {
       setIsLoading(true);
       setError("");
 
-      console.log(data);
       const response = await fetch("/api/task", {
         method: "POST",
         headers: {
