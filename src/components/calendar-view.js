@@ -1,6 +1,6 @@
 import { format, addDays } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
-import { Checkbox } from "@/components/ui/checkbox";
+import { DayView } from "@/components/day-view";
 
 export const CalendarView = ({ startDate }) => {
   const today = new Date();
@@ -48,28 +48,13 @@ export const CalendarView = ({ startDate }) => {
             variants={slideVariants}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <div className="flex flex-col">
-              <div className="text-xxs font-bold text-gray-500/80">
-                {days[0].dayNumber}
-              </div>
-              <div
-                className={`text-lg font-bold tracking-tight ${
-                  isToday(days[0].date) && "text-primary"
-                }`}
-              >
-                {days[0].dayName}
-              </div>
-              <div className="mt-4 space-y-2">
-                <div className="rounded-md border-b py-2">
-                  <input
-                    type="text"
-                    placeholder="Click text to edit"
-                    className="w-full bg-transparent p-1 text-sm focus:outline-none"
-                    aria-label={`Add todo for ${days[0].dayName}`}
-                  />
-                </div>
-              </div>
-            </div>
+            <DayView
+              dayNumber={days[0].dayNumber}
+              dayName={days[0].dayName}
+              isToday={isToday(days[0].date)}
+              index={0}
+              isMobile={true}
+            />
           </motion.div>
         </AnimatePresence>
       </div>
@@ -78,52 +63,13 @@ export const CalendarView = ({ startDate }) => {
       <div className="hidden md:block">
         <div className="grid grid-cols-5 gap-x-16 bg-white p-6">
           {days.map((day, index) => (
-            <motion.div
+            <DayView
               key={day.dayNumber}
-              className="flex flex-col"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-            >
-              <div className="text-xxs font-bold text-gray-500/80">
-                {day.dayNumber}
-              </div>
-              <div
-                className={`text-lg font-bold tracking-tight ${
-                  isToday(day.date) && "text-primary"
-                }`}
-              >
-                {day.dayName}
-              </div>
-              <div className="mt-4 space-y-1">
-                <div className="group relative flex items-center rounded-md border-b py-1">
-                  <div className="absolute -left-5 flex opacity-0 transition-opacity group-hover:opacity-100">
-                    <Checkbox id={`task-${index}`} aria-label="Complete task" />
-                  </div>
-                  <div className="text-[0.88rem]">Task placeholder</div>
-                </div>
-                <div className="group relative flex items-center rounded-md border-b py-1">
-                  <div className="absolute -left-5 flex opacity-0 transition-opacity group-hover:opacity-100">
-                    <Checkbox id={`task-${index}`} aria-label="Complete task" />
-                  </div>
-                  <div className="text-[0.88rem]">Another placeholder</div>
-                </div>
-                <div className="rounded-md border-b py-1">
-                  <input
-                    type="text"
-                    className="w-full bg-transparent p-1 text-sm focus:outline-none"
-                    aria-label={`Add todo for ${day.dayName}`}
-                  />
-                </div>
-                <div className="rounded-md border-b py-1">
-                  <input
-                    type="text"
-                    className="w-full bg-transparent p-1 text-sm focus:outline-none"
-                    aria-label={`Add todo for ${day.dayName}`}
-                  />
-                </div>
-              </div>
-            </motion.div>
+              dayNumber={day.dayNumber}
+              dayName={day.dayName}
+              isToday={isToday(day.date)}
+              index={index}
+            />
           ))}
         </div>
       </div>
