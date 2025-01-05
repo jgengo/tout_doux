@@ -22,7 +22,7 @@ const Navbar = ({ currentDate, onDateChange }: NavbarProps): JSX.Element => {
   return (
     <header
       role="banner"
-      className="border-primary sticky top-0 z-50 border-t-2 bg-white px-5"
+      className="sticky top-0 z-50 border-t-2 border-primary bg-white px-5"
       aria-label="Main navigation"
     >
       <nav className="grid min-h-10 grid-cols-[auto_1fr_auto] items-center gap-2">
@@ -37,7 +37,7 @@ const Navbar = ({ currentDate, onDateChange }: NavbarProps): JSX.Element => {
           <span className="text-xs">Search</span>
         </Button>
 
-        <h1 className="text-primary w-full text-center font-[family-name:var(--font-ibm-plex-sans)] font-bold uppercase tracking-tighter">
+        <h1 className="w-full text-center font-[family-name:var(--font-ibm-plex-sans)] font-bold uppercase tracking-tighter text-primary">
           ToutDoux
         </h1>
 
