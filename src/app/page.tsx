@@ -14,11 +14,7 @@ export default async function Root() {
         </p>
         <p className="mt-2 text-sm">work in progress</p>
         <div className="mt-4">
-          {session ? (
-            <SignOut session={session} />
-          ) : (
-            <SignIn session={session} />
-          )}
+          {session ? <SignOut /> : <SignIn session={session} />}
         </div>
       </div>
     </div>

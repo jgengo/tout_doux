@@ -2,14 +2,15 @@
 
 import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { Session } from "next-auth";
+import { cn } from "@/lib/utils";
 
-const SignOut = ({ session }: { session: Session | null }) => {
-  if (!session) {
-    return null;
-  }
+interface SignOutProps {
+  className?: string;
+}
+
+const SignOut = ({ className }: SignOutProps) => {
   return (
-    <Button size="lg" onClick={() => signOut()}>
+    <Button onClick={() => signOut()} className={cn(className)}>
       Sign out
     </Button>
   );
