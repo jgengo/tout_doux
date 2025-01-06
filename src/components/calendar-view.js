@@ -127,7 +127,7 @@ export const CalendarView = ({ startDate, onDateChange }) => {
         <AnimatePresence mode="wait">
           <motion.div
             key={days[0].dayNumber}
-            className="rounded-lg bg-white p-6"
+            className="rounded-lg bg-white px-6"
             initial="enter"
             animate="center"
             exit="exit"
