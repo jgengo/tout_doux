@@ -65,6 +65,7 @@ export const CalendarView = ({ startDate }) => {
           {days.map((day, index) => (
             <DayView
               key={day.dayNumber}
+              date={day.date}
               dayNumber={day.dayNumber}
               dayName={day.dayName}
               isToday={isToday(day.date)}

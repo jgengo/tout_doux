@@ -1,10 +1,11 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { motion } from "framer-motion";
 import { useState } from "react";
-
+import AddTask from "@/components/add-task";
 type DayViewProps = {
   dayNumber: string;
   dayName: string;
+  date: Date;
   isToday: boolean;
   index: number;
   isMobile?: boolean;
@@ -19,6 +20,7 @@ type Task = {
 export const DayView = ({
   dayNumber,
   dayName,
+  date,
   isToday,
   index,
   isMobile = false,
@@ -104,28 +106,8 @@ export const DayView = ({
             )}
           </div>
         ))}
-        <div className="rounded-md border-b py-2">
-          <input
-            type="text"
-            placeholder={isMobile ? "Click text to edit" : "Add a new task"}
-            className="w-full bg-transparent p-1 text-sm focus:outline-none"
-            aria-label={`Add todo for ${dayName}`}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && e.currentTarget.value.trim()) {
-                setTasks([
-                  ...tasks,
-                  {
-                    id: tasks.length
-                      ? Math.max(...tasks.map((t) => t.id)) + 1
-                      : 1,
-                    text: e.currentTarget.value.trim(),
-                    isEditing: false,
-                  },
-                ]);
-                e.currentTarget.value = "";
-              }
-            }}
-          />
+        <div className="rounded-md border-b py-1">
+          <AddTask date={date} />
         </div>
       </div>
     </div>
