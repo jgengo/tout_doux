@@ -1,6 +1,5 @@
 "use client";
 
-import { ChevronLeft, RefreshCw, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import SignOut from "@/components/sign-out";

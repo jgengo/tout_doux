@@ -9,12 +9,7 @@ const AddTask = ({ date }) => {
   const [error, setError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const handleAddTask = async (data) => {
     if (!data.text?.trim()) {
