@@ -14,25 +14,6 @@ const StatusBar = ({ currentPage = 1, totalPages = 7 }: StatusBarProps) => {
   return (
     <div className="sticky bottom-0 flex h-10 items-center justify-between border-t border-neutral-200 bg-white px-4">
       <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8"
-          aria-label="Previous view"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8"
-          aria-label="Refresh view"
-        >
-          <RefreshCw className="h-4 w-4" />
-        </Button>
-      </div>
-
-      <div className="flex items-center gap-2">
         {Array.from({ length: totalPages }, (_, i) => (
           <Button
             key={i}
@@ -47,14 +28,6 @@ const StatusBar = ({ currentPage = 1, totalPages = 7 }: StatusBarProps) => {
       </div>
 
       <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8"
-          aria-label="Toggle theme"
-        >
-          <Moon className="h-4 w-4" />
-        </Button>
         <SignOut />
       </div>
     </div>
