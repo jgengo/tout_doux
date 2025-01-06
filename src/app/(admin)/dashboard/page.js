@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 const AddTaskForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [deleteLoading, setDeleteLoading] = useState(null);
 
   const {
     register,
@@ -13,6 +15,23 @@ const AddTaskForm = () => {
     reset,
     formState: { errors },
   } = useForm();
+
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch("/api/tasks");
+      if (!response.ok) {
+        throw new Error("Failed to fetch tasks");
+      }
+      const data = await response.json();
+      setTasks(data);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   const handleAddTask = async (data) => {
     try {
@@ -37,10 +56,31 @@ const AddTaskForm = () => {
       }
 
       reset();
+      fetchTasks(); // Refresh tasks after adding
     } catch (err) {
       setError(err.message);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    try {
+      setDeleteLoading(taskId);
+      const response = await fetch(`/api/task/${taskId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to delete task");
+      }
+
+      fetchTasks(); // Refresh tasks after deletion
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeleteLoading(null);
     }
   };
 
@@ -111,6 +151,36 @@ const AddTaskForm = () => {
             {isLoading ? "Adding..." : "Add Task"}
           </button>
         </form>
+
+        <div className="mt-8">
+          <h3 className="mb-4 text-xl font-semibold text-gray-900">My Tasks</h3>
+          <div className="space-y-3">
+            {tasks.map((task) => (
+              <div
+                key={task._id}
+                className="flex items-center justify-between rounded-lg border border-gray-200 p-4"
+              >
+                <div>
+                  <p className="text-gray-800">{task.text}</p>
+                  <p className="text-sm text-gray-500">
+                    {new Date(task.date).toLocaleDateString()}
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleDeleteTask(task._id)}
+                  disabled={deleteLoading === task._id}
+                  className="ml-4 rounded-md bg-red-600 px-3 py-1.5 text-sm text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  aria-label={`Delete task ${task.text}`}
+                >
+                  {deleteLoading === task._id ? "Deleting..." : "Delete"}
+                </button>
+              </div>
+            ))}
+            {tasks.length === 0 && (
+              <p className="text-center text-gray-500">No tasks found</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
