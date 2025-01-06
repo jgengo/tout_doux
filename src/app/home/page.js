@@ -12,7 +12,7 @@ export default function Page() {
     <div className="flex min-h-screen flex-col">
       <Navbar currentDate={startDate} onDateChange={setStartDate} />
       <main className="flex-1">
-        <CalendarView startDate={startDate} />
+        <CalendarView startDate={startDate} onDateChange={setStartDate} />
       </main>
       <StatusBar />
     </div>

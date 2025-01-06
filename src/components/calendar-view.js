@@ -1,4 +1,10 @@
 import { format, addDays, isSameDay } from "date-fns";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsRight,
+  ChevronsLeft,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DayView } from "@/components/day-view";
 import { useState, useEffect, useCallback } from "react";
@@ -18,7 +24,7 @@ const slideVariants = {
   }),
 };
 
-export const CalendarView = ({ startDate }) => {
+export const CalendarView = ({ startDate, onDateChange }) => {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -76,7 +82,46 @@ export const CalendarView = ({ startDate }) => {
   }
 
   return (
-    <section className="mt-10 space-y-4" aria-label="Calendar View">
+    <section
+      className="group/section mt-10 space-y-4"
+      aria-label="Calendar View"
+    >
+      {/* Navigation Controls */}
+      <div className="flex items-center justify-between px-4">
+        <div className="bg-neutral-100 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100">
+          <button
+            onClick={() => onDateChange(addDays(startDate, -1))}
+            className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100"
+            aria-label="Previous week"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            onClick={() => onDateChange(addDays(startDate, -5))}
+            className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100"
+            aria-label="Previous week"
+          >
+            <ChevronsLeft className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="bg-neutral-100 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100">
+          <button
+            onClick={() => onDateChange(addDays(startDate, 1))}
+            className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100"
+            aria-label="Next week"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+          <button
+            onClick={() => onDateChange(addDays(startDate, 5))}
+            className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100"
+            aria-label="Next week"
+          >
+            <ChevronsRight className="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+
       {/* Mobile View */}
       <div className="md:hidden">
         <AnimatePresence mode="wait">
@@ -107,7 +152,7 @@ export const CalendarView = ({ startDate }) => {
 
       {/* Desktop View */}
       <div className="hidden md:block">
-        <div className="grid grid-cols-5 gap-x-16 rounded-lg bg-white p-6">
+        <div className="grid grid-cols-5 gap-x-16 rounded-lg bg-white px-6">
           {days.map((day, index) => (
             <DayView
               key={day.dayNumber}
