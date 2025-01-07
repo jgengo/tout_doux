@@ -1,20 +1,23 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import AddTask from "@/components/add-task";
+
+type Task = {
+  id: number;
+  text: string;
+  isEditing: boolean;
+  position: number;
+};
+
 type DayViewProps = {
   dayNumber: string;
   dayName: string;
   date: Date;
   isToday: boolean;
   index: number;
+  tasks: Task[];
+  isLoading: boolean;
   isMobile?: boolean;
-};
-
-type Task = {
-  id: number;
-  text: string;
-  isEditing: boolean;
 };
 
 export const DayView = ({
@@ -23,13 +26,12 @@ export const DayView = ({
   date,
   isToday,
   index,
+  tasks,
+  isLoading,
+  setTasks,
   isMobile = false,
 }: DayViewProps) => {
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: 1, text: "Task placeholder", isEditing: false },
-    { id: 2, text: "Another placeholder", isEditing: false },
-  ]);
-
+  console.log(tasks);
   const handleTaskClick = (taskId: number) => {
     setTasks(
       tasks.map((task) =>
@@ -65,47 +67,49 @@ export const DayView = ({
         {dayName}
       </div>
       <div className="mt-4 space-y-1">
-        {tasks.map((task) => (
-          <div
-            key={task.id}
-            className="group relative flex items-center rounded-md border-b py-1"
-          >
-            <div className="absolute -left-5 flex opacity-0 transition-opacity group-hover:opacity-100">
-              <Checkbox
-                id={`task-${index}-${task.id}`}
-                aria-label="Complete task"
-              />
-            </div>
-            {task.isEditing ? (
-              <input
-                type="text"
-                defaultValue={task.text}
-                className="w-full bg-transparent p-1 text-[0.88rem] focus:outline-none"
-                onBlur={(e) => handleTaskBlur(task.id, e.target.value)}
-                onKeyDown={(e) =>
-                  handleTaskKeyDown(e, task.id, e.currentTarget.value)
-                }
-                autoFocus
-              />
-            ) : (
-              <div
-                className="w-full cursor-pointer text-[0.88rem]"
-                onClick={() => handleTaskClick(task.id)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    handleTaskClick(task.id);
-                  }
-                }}
-              >
-                <span className="block truncate group-hover:whitespace-normal group-hover:break-words">
-                  {task.text}
-                </span>
+        {[...tasks]
+          .sort((a, b) => b.position - a.position)
+          .map((task) => (
+            <div
+              key={task.id}
+              className="group relative flex items-center rounded-md border-b py-1"
+            >
+              <div className="absolute -left-5 flex opacity-0 transition-opacity group-hover:opacity-100">
+                <Checkbox
+                  id={`task-${index}-${task.id}`}
+                  aria-label="Complete task"
+                />
               </div>
-            )}
-          </div>
-        ))}
+              {task.isEditing ? (
+                <input
+                  type="text"
+                  defaultValue={task.text}
+                  className="w-full bg-transparent p-1 text-[0.88rem] focus:outline-none"
+                  onBlur={(e) => handleTaskBlur(task.id, e.target.value)}
+                  onKeyDown={(e) =>
+                    handleTaskKeyDown(e, task.id, e.currentTarget.value)
+                  }
+                  autoFocus
+                />
+              ) : (
+                <div
+                  className="w-full cursor-pointer text-[0.88rem]"
+                  onClick={() => handleTaskClick(task.id)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      handleTaskClick(task.id);
+                    }
+                  }}
+                >
+                  <span className="block truncate group-hover:whitespace-normal group-hover:break-words">
+                    {task.text}
+                  </span>
+                </div>
+              )}
+            </div>
+          ))}
         <div className="rounded-md border-b py-1">
           <AddTask date={date} />
         </div>

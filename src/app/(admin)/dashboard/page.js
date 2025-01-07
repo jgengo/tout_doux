@@ -34,7 +34,6 @@ const AddTaskForm = () => {
     const response = await fetch("/api/users");
     const data = await response.json();
     setUsers(data);
-    console.log(data);
   };
 
   useEffect(() => {
@@ -94,137 +93,169 @@ const AddTaskForm = () => {
   };
 
   return (
-    <div className="container mx-auto min-h-screen p-6">
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Tasks Column */}
-        <div className="flex h-full flex-col space-y-6">
-          <div className="rounded-lg bg-white p-6 shadow-md">
-            <h2 className="mb-6 text-2xl font-bold text-primary">My Tasks</h2>
+    <div className="min-h-screen bg-gray-50 p-8">
+      <div className="mx-auto max-w-7xl">
+        <h1 className="mb-8 text-3xl font-bold text-gray-900">Dashboard</h1>
 
-            {error && (
-              <div
-                className="mb-4 rounded-md bg-red-100 p-3 text-red-700"
-                role="alert"
-              >
-                {error}
+        <div className="grid gap-8 lg:grid-cols-2">
+          {/* Tasks Section */}
+          <div className="space-y-6">
+            <div className="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
+              <div className="border-b border-gray-200 bg-white px-6 py-4">
+                <h2 className="text-xl font-semibold text-gray-900">
+                  My Tasks
+                </h2>
               </div>
-            )}
-
-            <div className="space-y-3">
-              {tasks.map((task) => (
-                <div
-                  key={task._id}
-                  className="flex items-center justify-between rounded-lg border border-gray-200 p-4 transition-all hover:border-primary/60 hover:shadow-sm"
-                >
-                  <div>
-                    <p className="text-gray-800">{task.text}</p>
-                    <p className="text-sm text-gray-500">
-                      {new Date(task.date).toLocaleDateString()}
-                    </p>
+              <div className="p-6">
+                {error && (
+                  <div className="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-700">
+                    {error}
                   </div>
-                  <button
-                    onClick={() => handleDeleteTask(task._id)}
-                    disabled={deleteLoading === task._id}
-                    className="ml-4 rounded-md bg-red-600 px-3 py-1.5 text-sm text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    aria-label={`Delete task ${task.text}`}
-                  >
-                    {deleteLoading === task._id ? "Deleting..." : "Delete"}
-                  </button>
-                </div>
-              ))}
-              {tasks.length === 0 && (
-                <p className="text-center text-gray-500">No tasks found</p>
-              )}
-            </div>
-          </div>
-
-          <div className="rounded-lg bg-white p-6 shadow-md">
-            <h3 className="mb-4 text-xl font-semibold text-gray-900">
-              Add New Task
-            </h3>
-            <form onSubmit={handleSubmit(handleAddTask)} className="space-y-4">
-              <div>
-                <label
-                  htmlFor="text"
-                  className="mb-1 block text-sm font-medium text-gray-700"
-                >
-                  Task Description
-                </label>
-                <input
-                  id="text"
-                  type="text"
-                  {...register("text", {
-                    required: "Task description is required",
-                  })}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                  disabled={isLoading}
-                  aria-invalid={errors.text ? "true" : "false"}
-                />
-                {errors.text && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.text.message}
-                  </p>
                 )}
-              </div>
 
-              <div>
-                <label
-                  htmlFor="date"
-                  className="mb-1 block text-sm font-medium text-gray-700"
-                >
-                  Due Date
-                </label>
-                <input
-                  id="date"
-                  type="date"
-                  {...register("date", { required: "Due date is required" })}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                  disabled={isLoading}
-                  min={new Date().toISOString().split("T")[0]}
-                  aria-invalid={errors.date ? "true" : "false"}
-                />
-                {errors.date && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.date.message}
-                  </p>
-                )}
-              </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full rounded-md bg-primary px-4 py-2 text-white transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                aria-label="Add task"
-              >
-                {isLoading ? "Adding..." : "Add Task"}
-              </button>
-            </form>
-          </div>
-        </div>
-
-        {/* Users Column */}
-        <div className="rounded-lg bg-white p-6 shadow-md">
-          <h2 className="mb-6 text-2xl font-bold text-primary">Users</h2>
-          <div className="space-y-3">
-            {users.map((user) => (
-              <div
-                key={user._id}
-                className="flex flex-col rounded-lg border border-gray-200 p-4 transition-all hover:border-primary/60 hover:shadow-sm"
-              >
-                <div className="flex w-full items-center justify-between gap-2">
-                  <p className="font-bold text-gray-800">{user.name}</p>
-                  {user.isAdmin && (
-                    <p className="rounded-xl bg-primary/60 px-2 py-1 text-xs text-white">
-                      Admin
+                <div className="divide-y divide-gray-200">
+                  {tasks.map((task) => (
+                    <div
+                      key={task._id}
+                      className="flex items-center justify-between py-4 first:pt-0 last:pb-0"
+                    >
+                      <div>
+                        <p className="font-medium text-gray-900">{task.text}</p>
+                        <p className="mt-1 text-sm text-gray-500">
+                          Due {new Date(task.date).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleDeleteTask(task._id)}
+                        disabled={deleteLoading === task._id}
+                        className="inline-flex items-center rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-100 disabled:opacity-50"
+                        aria-label={`Delete task ${task.text}`}
+                      >
+                        {deleteLoading === task._id ? "Deleting..." : "Delete"}
+                      </button>
+                    </div>
+                  ))}
+                  {tasks.length === 0 && (
+                    <p className="py-4 text-center text-sm text-gray-500">
+                      No tasks found
                     </p>
                   )}
                 </div>
-                <p className="text-sm text-gray-600">{user.email}</p>
               </div>
-            ))}
-            {users.length === 0 && (
-              <p className="text-center text-gray-500">No users found</p>
-            )}
+            </div>
+
+            <div className="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
+              <div className="border-b border-gray-200 bg-white px-6 py-4">
+                <h2 className="text-xl font-semibold text-gray-900">
+                  Add New Task
+                </h2>
+              </div>
+              <div className="p-6">
+                <form
+                  onSubmit={handleSubmit(handleAddTask)}
+                  className="space-y-4"
+                >
+                  <div>
+                    <label
+                      htmlFor="text"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Task Description
+                    </label>
+                    <input
+                      id="text"
+                      type="text"
+                      {...register("text", {
+                        required: "Task description is required",
+                      })}
+                      className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm"
+                      disabled={isLoading}
+                      aria-invalid={errors.text ? "true" : "false"}
+                    />
+                    {errors.text && (
+                      <p className="mt-2 text-sm text-red-600">
+                        {errors.text.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="date"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Due Date
+                    </label>
+                    <input
+                      id="date"
+                      type="date"
+                      {...register("date", {
+                        required: "Due date is required",
+                      })}
+                      className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm"
+                      disabled={isLoading}
+                      min={new Date().toISOString().split("T")[0]}
+                      aria-invalid={errors.date ? "true" : "false"}
+                    />
+                    {errors.date && (
+                      <p className="mt-2 text-sm text-red-600">
+                        {errors.date.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="inline-flex w-full justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
+                    aria-label="Add task"
+                  >
+                    {isLoading ? "Adding..." : "Add Task"}
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          {/* Users Section */}
+          <div className="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
+            <div className="border-b border-gray-200 bg-white px-6 py-4">
+              <h2 className="text-xl font-semibold text-gray-900">
+                Team Members
+              </h2>
+            </div>
+            <div className="divide-y divide-gray-200 p-6">
+              {users.map((user) => (
+                <div
+                  key={user._id}
+                  className="flex items-center justify-between py-4 first:pt-0 last:pb-0"
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center space-x-3">
+                      <div className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-200" />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium text-gray-900">
+                          {user.name}
+                        </p>
+                        <p className="truncate text-sm text-gray-500">
+                          {user.email}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  {user.isAdmin && (
+                    <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                      Admin
+                    </span>
+                  )}
+                </div>
+              ))}
+              {users.length === 0 && (
+                <p className="py-4 text-center text-sm text-gray-500">
+                  No users found
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -66,6 +66,7 @@ export const CalendarView = ({ startDate, onDateChange }) => {
       date,
       dayName: format(date, "EEEE").toUpperCase(),
       dayNumber: format(date, "MMM d, yyyy").toUpperCase(),
+      tasks: tasks.filter((task) => isSameDay(new Date(task.date), date)),
     };
   });
 
@@ -141,9 +142,7 @@ export const CalendarView = ({ startDate, onDateChange }) => {
               isToday={isToday(days[0].date)}
               index={0}
               isMobile={true}
-              tasks={tasks.filter((task) =>
-                isSameDay(new Date(task.date), days[0].date)
-              )}
+              tasks={days[0].tasks}
               isLoading={isLoading}
             />
           </motion.div>
@@ -161,9 +160,8 @@ export const CalendarView = ({ startDate, onDateChange }) => {
               dayName={day.dayName}
               isToday={isToday(day.date)}
               index={index}
-              tasks={tasks.filter((task) =>
-                isSameDay(new Date(task.date), day.date)
-              )}
+              tasks={day.tasks}
+              setTasks={setTasks}
               isLoading={isLoading}
             />
           ))}

@@ -25,10 +25,11 @@ export async function POST(req) {
 
     const user = await User.findById(session.user.id);
 
-    // Find highest position for tasks on this date
+    // Format date to YYYY-MM-DD and find highest position for tasks on this date
+    const formattedDate = new Date(date).toISOString().split("T")[0];
     const tasksOnDate = await Task.find({
       userId: user._id,
-      date: date,
+      date: formattedDate,
     })
       .sort({ position: -1 })
       .limit(1);
@@ -38,7 +39,7 @@ export async function POST(req) {
     const task = await Task.create({
       userId: user._id,
       text,
-      date,
+      date: formattedDate,
       position,
     });
 
