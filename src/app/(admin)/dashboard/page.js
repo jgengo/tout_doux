@@ -7,6 +7,7 @@ const AddTaskForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [tasks, setTasks] = useState([]);
+  const [users, setUsers] = useState([]);
   const [deleteLoading, setDeleteLoading] = useState(null);
 
   const {
@@ -29,8 +30,16 @@ const AddTaskForm = () => {
     }
   };
 
+  const fetchUsers = async () => {
+    const response = await fetch("/api/users");
+    const data = await response.json();
+    setUsers(data);
+    console.log(data);
+  };
+
   useEffect(() => {
     fetchTasks();
+    fetchUsers();
   }, []);
 
   const handleAddTask = async (data) => {
@@ -178,6 +187,31 @@ const AddTaskForm = () => {
             ))}
             {tasks.length === 0 && (
               <p className="text-center text-gray-500">No tasks found</p>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <h3 className="mb-4 text-xl font-semibold text-gray-900">Users</h3>
+          <div className="space-y-3">
+            {users.map((user) => (
+              <div
+                key={user._id}
+                className="flex flex-col rounded-lg border border-gray-200 p-4 hover:border-primary/60"
+              >
+                <div className="flex w-full items-center justify-between gap-2">
+                  <p className="font-bold text-gray-800">{user.name}</p>
+                  {user.isAdmin && (
+                    <p className="rounded-xl bg-primary/60 px-2 py-1 text-xs text-white">
+                      Admin
+                    </p>
+                  )}
+                </div>
+                <p className="text-sm text-gray-600">{user.email}</p>
+              </div>
+            ))}
+            {users.length === 0 && (
+              <p className="text-center text-gray-500">No users found</p>
             )}
           </div>
         </div>
