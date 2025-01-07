@@ -16,7 +16,7 @@ type DayViewProps = {
   isToday: boolean;
   index: number;
   tasks: Task[];
-  isLoading: boolean;
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   isMobile?: boolean;
 };
 
@@ -27,7 +27,6 @@ export const DayView = ({
   isToday,
   index,
   tasks,
-  isLoading,
   setTasks,
   isMobile = false,
 }: DayViewProps) => {
@@ -68,7 +67,7 @@ export const DayView = ({
       </div>
       <div className="mt-4 space-y-1">
         {[...tasks]
-          .sort((a, b) => b.position - a.position)
+          .sort((a, b) => a.position - b.position)
           .map((task) => (
             <div
               key={task.id}

@@ -26,7 +26,6 @@ const slideVariants = {
 
 export const CalendarView = ({ startDate, onDateChange }) => {
   const [tasks, setTasks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchTasks = useCallback(async () => {
@@ -34,7 +33,6 @@ export const CalendarView = ({ startDate, onDateChange }) => {
     const lastDate = addDays(startDate, 4);
 
     try {
-      setIsLoading(true);
       setError(null);
       const since = format(firstDate, "yyyy-MM-dd");
       const until = format(lastDate, "yyyy-MM-dd");
@@ -51,8 +49,6 @@ export const CalendarView = ({ startDate, onDateChange }) => {
       setTasks(data);
     } catch (err) {
       setError(err.message || "An error occurred while fetching tasks");
-    } finally {
-      setIsLoading(false);
     }
   }, [startDate]);
 
@@ -143,7 +139,6 @@ export const CalendarView = ({ startDate, onDateChange }) => {
               index={0}
               isMobile={true}
               tasks={days[0].tasks}
-              isLoading={isLoading}
             />
           </motion.div>
         </AnimatePresence>
@@ -162,7 +157,6 @@ export const CalendarView = ({ startDate, onDateChange }) => {
               index={index}
               tasks={day.tasks}
               setTasks={setTasks}
-              isLoading={isLoading}
             />
           ))}
         </div>
