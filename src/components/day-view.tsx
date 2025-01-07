@@ -30,7 +30,6 @@ export const DayView = ({
   setTasks,
   isMobile = false,
 }: DayViewProps) => {
-  console.log(tasks);
   const handleTaskClick = (taskId: number) => {
     setTasks(
       tasks.map((task) =>

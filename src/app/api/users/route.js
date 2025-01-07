@@ -14,7 +14,6 @@ export async function GET() {
     await connectMongo();
 
     const users = await User.find({});
-    console.log(users);
 
     return NextResponse.json(users, { status: 200 });
   } catch (error) {
