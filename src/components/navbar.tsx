@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 interface NavbarProps {
   currentDate: Date;
-  onDateChange: (date: Date) => void;
+  onDateChange: React.Dispatch<React.SetStateAction<Date>>;
 }
 
 const Navbar = ({ currentDate, onDateChange }: NavbarProps): JSX.Element => {

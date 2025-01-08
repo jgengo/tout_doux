@@ -1,13 +1,14 @@
+import { useState, useEffect, useCallback } from "react";
 import { format, addDays, isSameDay } from "date-fns";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronLeft,
   ChevronRight,
   ChevronsRight,
   ChevronsLeft,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+
 import { DayView } from "@/components/day-view";
-import { useState, useEffect, useCallback } from "react";
 
 const slideVariants = {
   enter: (direction) => ({
@@ -36,16 +37,14 @@ export const CalendarView = ({ startDate, onDateChange }) => {
       setError(null);
       const since = format(firstDate, "yyyy-MM-dd");
       const until = format(lastDate, "yyyy-MM-dd");
-      const url = `/api/tasks?since=${since}&until=${until}`;
 
-      const response = await fetch(url);
+      const response = await fetch(`/api/tasks?since=${since}&until=${until}`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch tasks");
       }
 
       const data = await response.json();
-      console.log(data);
       setTasks(data);
     } catch (err) {
       setError(err.message || "An error occurred while fetching tasks");
