@@ -1,7 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-
 import SignOut from "@/components/sign-out";
 
 interface StatusBarProps {
@@ -9,8 +9,22 @@ interface StatusBarProps {
   onViewChange: React.Dispatch<React.SetStateAction<number>>;
 }
 
+const VIEW_DAYS_STORAGE_KEY = "toutdoux_view_days_preference";
+
 const StatusBar = ({ viewDays, onViewChange }: StatusBarProps) => {
   const viewOptions = [1, 3, 5, 7];
+
+  useEffect(() => {
+    const savedViewDays = localStorage.getItem(VIEW_DAYS_STORAGE_KEY);
+    if (savedViewDays) {
+      onViewChange(Number(savedViewDays));
+    }
+  }, [onViewChange]);
+
+  const handleViewChange = (option: number) => {
+    localStorage.setItem(VIEW_DAYS_STORAGE_KEY, option.toString());
+    onViewChange(option);
+  };
 
   return (
     <div className="sticky bottom-0 flex h-10 items-center justify-between border-t border-neutral-200 bg-white px-4">
@@ -22,7 +36,7 @@ const StatusBar = ({ viewDays, onViewChange }: StatusBarProps) => {
             size="sm"
             className="h-8 w-8"
             aria-label={`View ${option} days`}
-            onClick={() => onViewChange(option)}
+            onClick={() => handleViewChange(option)}
           >
             {option}
           </Button>
