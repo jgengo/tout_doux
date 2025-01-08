@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+
+import { BrainDump } from "@/components/braindump";
 import { Navbar } from "@/components/navbar";
 import { StatusBar } from "@/components/statusbar";
 import { CalendarView } from "@/components/calendar-view";
@@ -19,6 +21,9 @@ export default function Page() {
           viewDays={viewDays}
         />
       </main>
+      <section className="flex-1 bg-neutral-100">
+        <BrainDump />
+      </section>
       <StatusBar viewDays={viewDays} onViewChange={setViewDays} />
     </div>
   );

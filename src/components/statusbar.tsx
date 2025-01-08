@@ -14,7 +14,7 @@ const StatusBar = ({ viewDays, onViewChange }: StatusBarProps) => {
 
   return (
     <div className="sticky bottom-0 flex h-10 items-center justify-between border-t border-neutral-200 bg-white px-4">
-      <div className="flex items-center gap-2">
+      <div className="invisible flex items-center gap-2 md:visible">
         {viewOptions.map((option) => (
           <Button
             key={option}
