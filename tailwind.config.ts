@@ -8,6 +8,12 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    "grid-cols-1",
+    "grid-cols-3",
+    "grid-cols-5",
+    "grid-cols-7"
+  ],
   theme: {
     container: {
       center: true,

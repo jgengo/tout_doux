@@ -25,7 +25,7 @@ const slideVariants = {
   }),
 };
 
-export const CalendarView = ({ startDate, onDateChange }) => {
+export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
 
@@ -55,7 +55,7 @@ export const CalendarView = ({ startDate, onDateChange }) => {
     fetchTasks();
   }, [fetchTasks]);
 
-  const days = Array.from({ length: 5 }, (_, index) => {
+  const days = Array.from({ length: viewDays }, (_, index) => {
     const date = addDays(startDate, index);
     return {
       date,
@@ -145,7 +145,9 @@ export const CalendarView = ({ startDate, onDateChange }) => {
 
       {/* Desktop View */}
       <div className="hidden md:block">
-        <div className="grid grid-cols-5 gap-x-16 rounded-lg bg-white px-6">
+        <div
+          className={`grid gap-x-16 rounded-lg bg-white px-6 grid-cols-${viewDays}`}
+        >
           {days.map((day, index) => (
             <DayView
               key={day.dayNumber}

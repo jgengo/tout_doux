@@ -5,23 +5,26 @@ import { Button } from "@/components/ui/button";
 import SignOut from "@/components/sign-out";
 
 interface StatusBarProps {
-  currentPage?: number;
-  totalPages?: number;
+  viewDays: number;
+  onViewChange: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const StatusBar = ({ currentPage = 1, totalPages = 7 }: StatusBarProps) => {
+const StatusBar = ({ viewDays, onViewChange }: StatusBarProps) => {
+  const viewOptions = [1, 3, 5, 7];
+
   return (
     <div className="sticky bottom-0 flex h-10 items-center justify-between border-t border-neutral-200 bg-white px-4">
       <div className="flex items-center gap-2">
-        {Array.from({ length: totalPages }, (_, i) => (
+        {viewOptions.map((option) => (
           <Button
-            key={i}
-            variant={currentPage === i + 1 ? "default" : "ghost"}
+            key={option}
+            variant={viewDays === option ? "default" : "ghost"}
             size="sm"
             className="h-8 w-8"
-            aria-label={`Page ${i + 1}`}
+            aria-label={`View ${option} days`}
+            onClick={() => onViewChange(option)}
           >
-            {i + 1}
+            {option}
           </Button>
         ))}
       </div>
