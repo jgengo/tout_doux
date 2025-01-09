@@ -1,11 +1,32 @@
+import { useEffect, useState } from "react";
+
 const BrainDump = () => {
+  const [dumps, setDumps] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/dumps")
+      .then((res) => res.json())
+      .then((data) => setDumps(data));
+  }, []);
+
   return (
-    <div className="flex flex-col bg-neutral-100 p-4">
+    <div className="flex w-full flex-col px-6 md:max-w-sm">
       <div className={"text-lg font-bold tracking-tight"}>BRAIN DUMP</div>
       <div className="mt-4 space-y-1">
-        <p className="max-w-sm text-sm text-gray-500/80">
-          This section is currently in progress of development
-        </p>
+        <div className="flex flex-col">
+          {dumps.map((dump, index) => (
+            <div
+              key={index}
+              className="w-full cursor-pointer border-b border-b-gray-300 py-1 text-[0.88rem]"
+            >
+              <p className="block truncate group-hover:whitespace-normal group-hover:break-words">
+                {dump.text}
+              </p>
+            </div>
+          ))}
+          {/* TODO: Make AddTask component generic so it can handle both tasks and dumps */}
+          {/* <AddTask /> */}
+        </div>
       </div>
     </div>
   );

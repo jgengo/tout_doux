@@ -82,7 +82,7 @@ export const DayView = ({
                 <input
                   type="text"
                   defaultValue={task.text}
-                  className="w-full bg-transparent p-1 text-[0.88rem] focus:outline-none"
+                  className="w-full bg-transparent text-[0.88rem] focus:outline-none"
                   onBlur={(e) => handleTaskBlur(task.id, e.target.value)}
                   onKeyDown={(e) =>
                     handleTaskKeyDown(e, task.id, e.currentTarget.value)
