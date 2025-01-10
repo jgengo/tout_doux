@@ -54,7 +54,7 @@ const StatusBar = ({ viewDays, onViewChange }: StatusBarProps) => {
           <UserRound />
         </Link>
 
-        <Button variant="primary" size="icon" onClick={() => signOut()}>
+        <Button size="icon" onClick={() => signOut()}>
           <LogOut />
         </Button>
       </div>

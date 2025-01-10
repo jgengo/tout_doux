@@ -82,7 +82,6 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
       className="group/section mt-10 space-y-4"
       aria-label="Calendar View"
     >
-      {/* Navigation Controls */}
       <div className="flex items-center justify-between px-4">
         <div className="bg-neutral-100 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100">
           <button
