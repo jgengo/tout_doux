@@ -67,9 +67,9 @@ export const DayView = ({
       <div className="mt-4 space-y-1">
         {[...tasks]
           .sort((a, b) => a.position - b.position)
-          .map((task) => (
+          .map((task, index) => (
             <div
-              key={task.id}
+              key={index}
               className="group relative flex items-center rounded-md border-b py-1"
             >
               <div className="absolute -left-5 flex opacity-0 transition-opacity group-hover:opacity-100">
