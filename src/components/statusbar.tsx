@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { UserRound, LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
-import SignOut from "@/components/sign-out";
 
 interface StatusBarProps {
   viewDays: number;
@@ -43,8 +46,17 @@ const StatusBar = ({ viewDays, onViewChange }: StatusBarProps) => {
         ))}
       </div>
 
-      <div className="flex items-center gap-2">
-        <SignOut />
+      <div className="flex items-center gap-4">
+        <Link
+          href="/me"
+          className="inline-flex h-8 w-8 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+        >
+          <UserRound />
+        </Link>
+
+        <Button variant="primary" size="icon" onClick={() => signOut()}>
+          <LogOut />
+        </Button>
       </div>
     </div>
   );
