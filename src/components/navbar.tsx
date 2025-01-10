@@ -13,7 +13,7 @@ const Navbar = ({ currentDate, onDateChange }: NavbarProps): JSX.Element => {
       aria-label="Main navigation"
     >
       <nav className="grid min-h-10 grid-cols-[1fr_auto] items-center gap-2">
-        <h1 className="w-full font-[family-name:var(--font-ibm-plex-sans)] font-bold uppercase tracking-tighter text-primary">
+        <h1 className="w-full font-[family-name:var(--font-ibm-plex-sans)] text-lg font-bold uppercase tracking-tighter text-primary">
           ToutDoux
         </h1>
 

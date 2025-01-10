@@ -21,7 +21,7 @@ const config: Config = {
     },
   	extend: {
       fontSize: {
-        "xxs": "0.60rem",
+        "xxs": "0.65rem",
       },
       screens: {
         tall: { raw: "(min-height: 1000px)" },
