@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { motion } from "framer-motion";
 import AddItem from "@/components/add-item";
 
 const BrainDump = () => {
@@ -16,8 +16,13 @@ const BrainDump = () => {
   }, []);
 
   return (
-    <div className="flex w-full flex-col px-6 md:max-w-sm">
-      <div className={"text-lg font-bold tracking-tight"}>BRAIN DUMP</div>
+    <motion.div
+      className="flex w-full flex-col px-6 md:max-w-sm"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+    >
+      <div className="text-lg font-bold tracking-tight">BRAIN DUMP</div>
       <div className="mt-4 space-y-1">
         <div className="flex flex-col">
           {dumps.map((dump, index) => (
@@ -36,7 +41,7 @@ const BrainDump = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
