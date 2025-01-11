@@ -17,9 +17,7 @@ interface FormData {
 const AddItem = ({ type, date, onSuccess }: AddItemProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const { register, handleSubmit, reset } = useForm<FormData>();
-
+  const { register, handleSubmit, reset, setFocus } = useForm<FormData>();
   const handleAdd = async (data: FormData) => {
     if (!data.text?.trim()) {
       return;
@@ -51,6 +49,13 @@ const AddItem = ({ type, date, onSuccess }: AddItemProps) => {
       const newItem = await response.json();
       reset();
       onSuccess?.(newItem);
+
+      // focus back on the input after submitting.
+      // I had to wait for the input to be rendered, or something like that :'(
+      // For some reasons the activeElement after submitting goes to body
+      setTimeout(() => {
+        setFocus("text");
+      }, 5);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An unknown error occurred"
