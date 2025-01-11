@@ -46,7 +46,7 @@ const AddTaskForm = () => {
       setIsLoading(true);
       setError("");
 
-      const response = await fetch("/api/task", {
+      const response = await fetch("/api/tasks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

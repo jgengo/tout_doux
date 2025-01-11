@@ -1,6 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { motion } from "framer-motion";
 import AddTask from "@/components/add-task";
+import AddItem from "./add-item";
 
 type Task = {
   id: number;
@@ -108,8 +109,8 @@ export const DayView = ({
               )}
             </div>
           ))}
-        <div className="rounded-md border-b py-1">
-          <AddTask date={date} />
+        <div className="rounded-md border-b">
+          <AddItem type="task" date={date} />
         </div>
       </div>
     </div>

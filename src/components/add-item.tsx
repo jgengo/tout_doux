@@ -4,14 +4,19 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 
-const AddTask = ({ date }) => {
+interface AddItemProps {
+  type: "task" | "dump";
+  date?: Date;
+  onSuccess?: () => void;
+}
+
+const AddItem = ({ type, date, onSuccess }: AddItemProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const { register, handleSubmit, reset } = useForm();
 
-  const handleAddTask = async (data) => {
+  const handleAdd = async (data: { text: string }) => {
     if (!data.text?.trim()) {
       return;
     }
@@ -19,28 +24,27 @@ const AddTask = ({ date }) => {
     try {
       setIsLoading(true);
       setError("");
-      setIsSuccess(false);
 
-      const response = await fetch("/api/tasks", {
+      const endpoint = type === "task" ? "/api/tasks" : "/api/dumps";
+      const body =
+        type === "task"
+          ? { text: data.text.trim(), date, position: 1 }
+          : { text: data.text.trim(), position: 1 };
+
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          text: data.text.trim(),
-          date,
-          position: 1,
-        }),
+        body: JSON.stringify(body),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.error || "Failed to create task");
+        throw new Error(error.error || `Failed to create ${type}`);
       }
-
-      setIsSuccess(true);
-      setTimeout(() => setIsSuccess(false), 2000);
       reset();
+      onSuccess?.();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -49,7 +53,7 @@ const AddTask = ({ date }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(handleAddTask)} className="relative">
+    <form onSubmit={handleSubmit(handleAdd)} className="relative py-1">
       <motion.div
         initial={false}
         animate={isLoading ? { opacity: 0.5 } : { opacity: 1 }}
@@ -57,27 +61,16 @@ const AddTask = ({ date }) => {
         <input
           {...register("text", {
             required: true,
-            maxLength: 100,
+            maxLength: type === "dump" ? 1000 : 100,
           })}
           type="text"
-          className="w-full rounded bg-transparent p-1 text-sm placeholder-gray-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          className="w-full rounded bg-transparent text-sm placeholder-gray-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isLoading}
-          aria-label="Add a new task"
+          aria-label={`Add a new ${type}`}
         />
       </motion.div>
 
       <AnimatePresence>
-        {isSuccess && ( // TODO: will probably be removed. I believe that task showing up should be enough
-          <motion.div
-            initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: 1, y: 30 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute -top-6 left-0 text-xs text-green-500"
-          >
-            Task added successfully!
-          </motion.div>
-        )}
-
         {error && (
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -94,4 +87,4 @@ const AddTask = ({ date }) => {
   );
 };
 
-export default AddTask;
+export default AddItem;

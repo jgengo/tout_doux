@@ -25,6 +25,12 @@ const userSchema = new mongoose.Schema({
       ref: "Task",
     },
   ],
+  dumps: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Dump",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

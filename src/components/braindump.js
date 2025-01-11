@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 
+import AddItem from "@/components/add-item";
+
 const BrainDump = () => {
   const [dumps, setDumps] = useState([]);
 
-  useEffect(() => {
-    const fetchDumps = async () => {
-      const res = await fetch("/api/dumps");
-      const data = await res.json();
-      console.log(data);
-      setDumps(data);
-    };
+  const fetchDumps = async () => {
+    const res = await fetch("/api/dumps");
+    const data = await res.json();
+    setDumps(data);
+  };
 
+  useEffect(() => {
     fetchDumps();
   }, []);
 
@@ -30,7 +31,9 @@ const BrainDump = () => {
             </div>
           ))}
           {/* TODO: Make AddTask component generic so it can handle both tasks and dumps */}
-          {/* <AddTask /> */}
+          <div className="rounded-md border-b border-b-gray-300">
+            <AddItem type="dump" onSuccess={fetchDumps} />
+          </div>
         </div>
       </div>
     </div>
