@@ -30,7 +30,7 @@ const BrainDump = () => {
               </p>
             </div>
           ))}
-          {/* TODO: Make AddTask component generic so it can handle both tasks and dumps */}
+
           <div className="rounded-md border-b border-b-gray-300">
             <AddItem type="dump" onSuccess={fetchDumps} />
           </div>

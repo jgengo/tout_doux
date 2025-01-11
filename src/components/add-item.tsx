@@ -10,13 +10,17 @@ interface AddItemProps {
   onSuccess?: () => void;
 }
 
+interface FormData {
+  text: string;
+}
+
 const AddItem = ({ type, date, onSuccess }: AddItemProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm<FormData>();
 
-  const handleAdd = async (data: { text: string }) => {
+  const handleAdd = async (data: FormData) => {
     if (!data.text?.trim()) {
       return;
     }
@@ -46,7 +50,9 @@ const AddItem = ({ type, date, onSuccess }: AddItemProps) => {
       reset();
       onSuccess?.();
     } catch (err) {
-      setError(err.message);
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred"
+      );
     } finally {
       setIsLoading(false);
     }
