@@ -8,6 +8,8 @@ export async function GET(req) {
   const { searchParams } = new URL(req.url);
   console.log(searchParams);
 
+  // TODO: I've to implement fetching tasks between two dates
+
   try {
     const session = await auth();
 
