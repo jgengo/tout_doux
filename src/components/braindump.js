@@ -4,9 +4,14 @@ const BrainDump = () => {
   const [dumps, setDumps] = useState([]);
 
   useEffect(() => {
-    fetch("/api/dumps")
-      .then((res) => res.json())
-      .then((data) => setDumps(data));
+    const fetchDumps = async () => {
+      const res = await fetch("/api/dumps");
+      const data = await res.json();
+      console.log(data);
+      setDumps(data);
+    };
+
+    fetchDumps();
   }, []);
 
   return (
