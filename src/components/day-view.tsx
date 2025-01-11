@@ -58,7 +58,9 @@ export const DayView = ({
 
   const content = (
     <div className="flex flex-col">
-      <div className="text-xs tracking-tight text-gray-500/80">{dayNumber}</div>
+      <div className="text-xs font-bold tracking-tight text-gray-500/80">
+        {dayNumber}
+      </div>
       <div className={`text-xl font-bold ${isToday ? "text-primary" : ""}`}>
         {dayName}
       </div>
