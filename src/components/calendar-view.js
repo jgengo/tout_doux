@@ -28,6 +28,65 @@ const slideVariants = {
 export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
+  const [days, setDays] = useState([]);
+
+  const handleTaskDelete = async (taskId) => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete task");
+      }
+
+      // Update local state after successful deletion
+      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
+    } catch (err) {
+      setError(err.message || "An error occurred while deleting task");
+    }
+  };
+
+  const handleTaskUpdate = async (taskId, updates) => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updates),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update task");
+      }
+
+      const updatedTask = await response.json();
+
+      // Update local state after successful update
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === taskId ? { ...task, ...updatedTask } : task
+        )
+      );
+    } catch (err) {
+      setError(err.message || "An error occurred while updating task");
+    }
+  };
+
+  const explodeTasks = useCallback(() => {
+    const prepDays = Array.from({ length: viewDays }, (_, index) => {
+      const date = addDays(startDate, index);
+      return {
+        date,
+        dayName: format(date, "EEEE").toUpperCase(),
+        dayNumber: format(date, "MMM d, yyyy").toUpperCase(),
+        tasks: tasks.filter((task) => isSameDay(new Date(task.date), date)),
+      };
+    });
+
+    setDays(prepDays);
+  }, [tasks, startDate, viewDays]);
 
   const fetchTasks = useCallback(async () => {
     const firstDate = startDate;
@@ -55,19 +114,17 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
     fetchTasks();
   }, [fetchTasks]);
 
-  const days = Array.from({ length: viewDays }, (_, index) => {
-    const date = addDays(startDate, index);
-    return {
-      date,
-      dayName: format(date, "EEEE").toUpperCase(),
-      dayNumber: format(date, "MMM d, yyyy").toUpperCase(),
-      tasks: tasks.filter((task) => isSameDay(new Date(task.date), date)),
-    };
-  });
+  useEffect(() => {
+    explodeTasks();
+  }, [explodeTasks]);
 
   const isToday = useCallback((date) => {
     return isSameDay(date, new Date());
   }, []);
+
+  const handleTaskCreate = (newTask) => {
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+  };
 
   if (error) {
     return (
@@ -75,6 +132,10 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
         {error}
       </div>
     );
+  }
+
+  if (!days.length) {
+    return null;
   }
 
   return (
@@ -137,6 +198,9 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
               index={0}
               isMobile={true}
               tasks={days[0].tasks}
+              onTaskDelete={handleTaskDelete}
+              onTaskUpdate={handleTaskUpdate}
+              onTaskCreate={handleTaskCreate}
             />
           </motion.div>
         </AnimatePresence>
@@ -156,7 +220,9 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
               isToday={isToday(day.date)}
               index={index}
               tasks={day.tasks}
-              setTasks={setTasks}
+              onTaskDelete={handleTaskDelete}
+              onTaskUpdate={handleTaskUpdate}
+              onTaskCreate={handleTaskCreate}
             />
           ))}
         </div>

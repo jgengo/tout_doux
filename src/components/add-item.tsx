@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 interface AddItemProps {
   type: "task" | "dump";
   date?: Date;
-  onSuccess?: () => void;
+  onSuccess?: (item: any) => void;
 }
 
 interface FormData {
@@ -47,8 +47,10 @@ const AddItem = ({ type, date, onSuccess }: AddItemProps) => {
         const error = await response.json();
         throw new Error(error.error || `Failed to create ${type}`);
       }
+
+      const newItem = await response.json();
       reset();
-      onSuccess?.();
+      onSuccess?.(newItem);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An unknown error occurred"

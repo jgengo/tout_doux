@@ -1,24 +1,29 @@
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 import { motion } from "framer-motion";
 import AddItem from "./add-item";
+import { useState } from "react";
 
 type Task = {
-  id: number;
+  _id: number;
   text: string;
   isEditing: boolean;
   position: number;
 };
 
-type DayViewProps = {
+interface DayViewProps {
   dayNumber: string;
   dayName: string;
   date: Date;
   isToday: boolean;
   index: number;
   tasks: Task[];
-  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  onTaskDelete: (taskId: number) => Promise<void>;
+  onTaskUpdate: (taskId: number, updates: Partial<Task>) => Promise<void>;
   isMobile?: boolean;
-};
+  onTaskCreate?: (task: Task) => void;
+}
 
 export const DayView = ({
   dayNumber,
@@ -27,23 +32,21 @@ export const DayView = ({
   isToday,
   index,
   tasks,
-  setTasks,
+  onTaskDelete,
+  onTaskUpdate,
   isMobile = false,
+  onTaskCreate,
 }: DayViewProps) => {
+  const [editingTasks, setEditingTasks] = useState<{ [key: number]: boolean }>(
+    {}
+  );
+
   const handleTaskClick = (taskId: number) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskId ? { ...task, isEditing: true } : task
-      )
-    );
+    setEditingTasks((prev) => ({ ...prev, [taskId]: true }));
   };
 
-  const handleTaskBlur = (taskId: number, newText: string) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskId ? { ...task, text: newText, isEditing: false } : task
-      )
-    );
+  const handleTaskBlur = (taskId: number) => {
+    setEditingTasks((prev) => ({ ...prev, [taskId]: false }));
   };
 
   const handleTaskKeyDown = (
@@ -52,8 +55,17 @@ export const DayView = ({
     newText: string
   ) => {
     if (e.key === "Enter") {
-      handleTaskBlur(taskId, newText);
+      e.preventDefault();
+      onTaskUpdate(taskId, { text: newText });
+      setEditingTasks((prev) => ({ ...prev, [taskId]: false }));
     }
+    if (e.key === "Escape") {
+      setEditingTasks((prev) => ({ ...prev, [taskId]: false }));
+    }
+  };
+
+  const handleTaskCreate = (newTask: Task) => {
+    onTaskCreate?.(newTask);
   };
 
   const content = (
@@ -67,37 +79,34 @@ export const DayView = ({
       <div className="mt-4 space-y-1">
         {[...tasks]
           .sort((a, b) => a.position - b.position)
-          .map((task, index) => (
+          .map((task) => (
             <div
-              key={index}
+              key={task._id}
               className="group relative flex items-center rounded-md border-b py-1"
             >
               <div className="absolute -left-5 flex opacity-0 transition-opacity group-hover:opacity-100">
-                <Checkbox
-                  id={`task-${index}-${task.id}`}
-                  aria-label="Complete task"
-                />
+                <Checkbox id={`task-${task._id}`} aria-label="Complete task" />
               </div>
-              {task.isEditing ? (
+              {editingTasks[task._id] ? (
                 <input
                   type="text"
                   defaultValue={task.text}
                   className="w-full bg-transparent text-[0.88rem] focus:outline-none"
-                  onBlur={(e) => handleTaskBlur(task.id, e.target.value)}
+                  onBlur={() => handleTaskBlur(task._id)}
                   onKeyDown={(e) =>
-                    handleTaskKeyDown(e, task.id, e.currentTarget.value)
+                    handleTaskKeyDown(e, task._id, e.currentTarget.value)
                   }
                   autoFocus
                 />
               ) : (
                 <div
                   className="w-full cursor-pointer text-[0.88rem]"
-                  onClick={() => handleTaskClick(task.id)}
+                  onClick={() => handleTaskClick(task._id)}
                   role="button"
                   tabIndex={0}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
-                      handleTaskClick(task.id);
+                      handleTaskClick(task._id);
                     }
                   }}
                 >
@@ -106,10 +115,18 @@ export const DayView = ({
                   </span>
                 </div>
               )}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute -right-5 h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100"
+                onClick={() => onTaskDelete(task._id)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
             </div>
           ))}
         <div className="rounded-md border-b">
-          <AddItem type="task" date={date} />
+          <AddItem type="task" date={date} onSuccess={handleTaskCreate} />
         </div>
       </div>
     </div>

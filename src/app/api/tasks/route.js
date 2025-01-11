@@ -73,10 +73,7 @@ export async function POST(req) {
     user.tasks.push(task._id);
     await user.save();
 
-    return NextResponse.json(
-      { message: "Task created successfully" },
-      { status: 201 }
-    );
+    return NextResponse.json(task, { status: 201 });
   } catch (e) {
     console.error(e);
     return NextResponse.json(
