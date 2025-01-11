@@ -1,24 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+    <img src='.github/docs/logo.png' alt="toutdoux's logo" /><br />
+    <h1 align="center">Toutdoux</h1>
+    <sub>/tu du/ adjective — (French) very soft.</sub>
+</div>
+
+<div align="center">
+  <sub>Created by <a href="https://github.com/jgengo">Jordane Gengo</a></sub>
+</div>
+
+<br/>
+
+**Toutdoux** is a minimalist, design-focused todo app inspired by TeuxDeux. Built with Next.js 14, TypeScript, and Tailwind CSS.
+
+<br/><br/>
+
+<div align="center">
+
+![screenshot](.github/docs/screenshot.png)
+
+</div>
+
+## Features
+
+- 🎯 Minimalist task management
+- 📱 Responsive design (mobile & desktop)
+- 🧠 Brain dump section for quick thoughts
+- 🎨 Clean, animation-rich UI
+- 🔐 Google authentication
+- 📅 Flexible calendar view (1, 3, 5, or 7 days)
+- 💾 Persistent view preferences
+- 🌙 Dark mode support (coming soon)
+
+## Tech Stack
+
+- **Framework:** Next.js 14 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **UI Components:** shadcn/ui
+- **Authentication:** NextAuth.js v5
+- **Database:** MongoDB with Mongoose
+- **Animations:** Framer Motion
+- **Icons:** Lucide Icons
+- **Forms:** React Hook Form
+- **Font:** IBM Plex Sans
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+
+```bash
+git clone https://github.com/jgengo/tout_doux.git
+cd tout_doux
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+pnpm install
+# or
+yarn install
+```
+
+3. Create a `.env.local` file in the root directory with the following variables:
+
+```bash
+# MongoDB
+MONGODB_URI=
+
+# Resend
+RESEND_KEY=
+
+# NextAuth
+AUTH_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
+
+4. Start the development server:
 
 ```bash
 npm run dev
 # or
-yarn dev
-# or
 pnpm dev
 # or
-bun dev
+yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
 
@@ -28,9 +100,3 @@ To learn more about Next.js, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
