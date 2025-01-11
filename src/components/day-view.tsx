@@ -1,6 +1,5 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { motion } from "framer-motion";
-import AddTask from "@/components/add-task";
 import AddItem from "./add-item";
 
 type Task = {
