@@ -3,19 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
-
-// Types to move into a separate file
-interface Task {
-  _id: number;
-  text: string;
-  isEditing: boolean;
-  position: number;
-  isCompleted?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-type TaskCreateHandler = (task: Task) => void;
+import { TaskCreateHandler } from "@/types/task";
 
 interface AddItemProps {
   type: "task" | "dump";

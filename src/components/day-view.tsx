@@ -1,40 +1,12 @@
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { X } from "lucide-react";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
-import { motion } from "framer-motion";
-import AddItem from "./add-item";
-import { useState } from "react";
+import AddItem from "@/components/add-item";
 
-// Types
-interface Task {
-  _id: number;
-  text: string;
-  isEditing: boolean;
-  position: number;
-  isCompleted?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-type TaskUpdateHandler = (
-  taskId: number,
-  updates: Partial<Task>
-) => Promise<void>;
-type TaskDeleteHandler = (taskId: number) => Promise<void>;
-type TaskCreateHandler = (task: Task) => void;
-
-interface DayViewProps {
-  dayNumber: string;
-  dayName: string;
-  date: Date;
-  isToday: boolean;
-  index: number;
-  tasks: Task[];
-  onTaskDelete: TaskDeleteHandler;
-  onTaskUpdate: TaskUpdateHandler;
-  onTaskCreate?: TaskCreateHandler;
-  isMobile?: boolean;
-}
+import { DayViewProps, TaskItemProps } from "@/types/day-view";
 
 // Task Item Component
 const TaskItem = ({
@@ -44,14 +16,7 @@ const TaskItem = ({
   onBlur,
   onKeyDown,
   onDelete,
-}: {
-  task: Task;
-  isEditing: boolean;
-  onEdit: () => void;
-  onBlur: () => void;
-  onKeyDown: (e: React.KeyboardEvent, value: string) => void;
-  onDelete: () => void;
-}) => (
+}: TaskItemProps) => (
   <div
     className="group relative flex items-center rounded-md border-b py-1"
     role="listitem"
