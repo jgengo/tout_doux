@@ -16,56 +16,67 @@ const TaskItem = ({
   onBlur,
   onKeyDown,
   onDelete,
-}: TaskItemProps) => (
-  <div
-    className="group relative flex items-center rounded-md border-b py-1"
-    role="listitem"
-  >
-    <div className="absolute -left-5 flex opacity-0 transition-opacity group-hover:opacity-100">
-      <Checkbox
-        id={`task-${task._id}`}
-        aria-label={`Mark "${task.text}" as complete`}
-      />
-    </div>
-    {isEditing ? (
-      <input
-        type="text"
-        defaultValue={task.text}
-        className="w-full bg-transparent text-[0.88rem] focus:outline-none"
-        onBlur={onBlur}
-        onKeyDown={(e) => onKeyDown(e, e.currentTarget.value)}
-        aria-label="Edit task"
-        autoFocus
-      />
-    ) : (
-      <div
-        className="w-full cursor-pointer text-[0.88rem]"
-        onClick={onEdit}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            onEdit();
-          }
-        }}
-        aria-label={`Edit task: ${task.text}`}
-      >
-        <span className="block truncate group-hover:whitespace-normal group-hover:break-words">
-          {task.text}
-        </span>
-      </div>
-    )}
-    <Button
-      variant="ghost"
-      size="icon"
-      className="absolute right-0 h-5 w-5 bg-accent transition-colors duration-300 hover:bg-destructive hover:text-white md:opacity-0 md:transition-opacity md:group-hover:opacity-100"
-      onClick={onDelete}
-      aria-label={`Delete task: ${task.text}`}
+  onCheckedChange,
+}: TaskItemProps) => {
+  return (
+    <div
+      className="group relative flex items-center rounded-md border-b py-1"
+      role="listitem"
     >
-      <X className="h-4 w-4" />
-    </Button>
-  </div>
-);
+      <div className="absolute -left-5 flex opacity-0 transition-opacity group-hover:opacity-100">
+        <Checkbox
+          id={`task-${task._id}`}
+          checked={task.isCompleted}
+          onCheckedChange={() =>
+            onCheckedChange(task._id, { isCompleted: !task.isCompleted })
+          }
+          aria-label={`Mark "${task.text}" as complete`}
+        />
+      </div>
+      {isEditing ? (
+        <input
+          type="text"
+          defaultValue={task.text}
+          className="w-full bg-transparent text-[0.88rem] focus:outline-none"
+          onBlur={onBlur}
+          onKeyDown={(e) => onKeyDown(e, e.currentTarget.value)}
+          aria-label="Edit task"
+          autoFocus
+        />
+      ) : (
+        <div
+          className="w-full cursor-pointer text-[0.88rem]"
+          onClick={onEdit}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              onEdit();
+            }
+          }}
+          aria-label={`Edit task: ${task.text}`}
+        >
+          <span
+            className={`block truncate group-hover:whitespace-normal group-hover:break-words ${
+              task.isCompleted ? "text-gray-500 line-through" : ""
+            }`}
+          >
+            {task.text}
+          </span>
+        </div>
+      )}
+      <Button
+        variant="ghost"
+        size="icon"
+        className="absolute right-0 h-5 w-5 bg-accent transition-colors duration-300 hover:bg-destructive hover:text-white md:opacity-0 md:transition-opacity md:group-hover:opacity-100"
+        onClick={onDelete}
+        aria-label={`Delete task: ${task.text}`}
+      >
+        <X className="h-4 w-4" />
+      </Button>
+    </div>
+  );
+};
 
 // Main Component
 export const DayView = ({
@@ -122,7 +133,14 @@ export const DayView = ({
       </div>
       <div className="mt-4 space-y-1" role="list">
         {[...tasks]
-          .sort((a, b) => a.position - b.position)
+          .sort((a, b) => {
+            // First sort by completion status
+            if (a.isCompleted !== b.isCompleted) {
+              return a.isCompleted ? 1 : -1;
+            }
+            // Then sort by position
+            return a.position - b.position;
+          })
           .map((task) => (
             <TaskItem
               key={task._id}
@@ -132,6 +150,7 @@ export const DayView = ({
               onBlur={() => handleTaskBlur(task._id)}
               onKeyDown={(e, value) => handleTaskKeyDown(e, task._id, value)}
               onDelete={() => onTaskDelete(task._id)}
+              onCheckedChange={onTaskUpdate}
             />
           ))}
         {Array.from({ length: Math.max(0, 10 - tasks.length) }).map((_, i) => (

@@ -20,4 +20,5 @@ export interface TaskItemProps {
   onBlur: () => void;
   onKeyDown: (e: React.KeyboardEvent, value: string) => void;
   onDelete: () => void;
+  onCheckedChange: TaskUpdateHandler;
 } 
