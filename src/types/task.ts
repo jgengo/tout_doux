@@ -7,6 +7,9 @@ export interface Task {
   createdAt?: Date
 }
 
-export type TaskCreateHandler = (task: Task) => void
-export type TaskUpdateHandler = (taskId: number, updates: Partial<Task>) => Promise<void>
-export type TaskDeleteHandler = (taskId: number) => Promise<void> 
+export type TaskUpdateFields = Pick<Task, "text" | "isCompleted">;
+
+
+export type TaskCreateHandler = React.Dispatch<React.SetStateAction<Task>>;
+export type TaskUpdateHandler = (taskId: number, updates: Partial<TaskUpdateFields>) => Promise<void>;
+export type TaskDeleteHandler = React.Dispatch<React.SetStateAction<number>>;
