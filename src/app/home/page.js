@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { BrainDump } from "@/components/braindump";
+// import { BrainDump } from "@/components/braindump";
 import { Navbar } from "@/components/navbar";
 import { StatusBar } from "@/components/statusbar";
 import { CalendarView } from "@/components/calendar-view";
