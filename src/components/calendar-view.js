@@ -145,7 +145,7 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
       className="group/section mt-10 space-y-4"
       aria-label="Calendar View"
     >
-      <div className="flex items-center justify-between px-4">
+      <div className="hidden items-center justify-between px-4 md:flex">
         <div className="bg-neutral-100 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100">
           <button
             onClick={() => onDateChange(addDays(startDate, -1))}
