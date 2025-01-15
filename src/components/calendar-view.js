@@ -28,7 +28,6 @@ const slideVariants = {
 
 export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
   const [tasks, setTasks] = useState([]);
-  const [error, setError] = useState(null);
   const [days, setDays] = useState([]);
 
   const { toast } = useToast();
@@ -46,7 +45,10 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
       // Update local state after successful deletion
       setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
     } catch (err) {
-      setError(err.message || "An error occurred while deleting task");
+      toast({
+        title: "Error",
+        description: err.message || "An error occurred while deleting task",
+      });
     }
   };
 
@@ -99,7 +101,6 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
     const lastDate = addDays(startDate, 4);
 
     try {
-      setError(null);
       const since = format(firstDate, "yyyy-MM-dd");
       const until = format(lastDate, "yyyy-MM-dd");
 
@@ -112,7 +113,10 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
       const data = await response.json();
       setTasks(data);
     } catch (err) {
-      setError(err.message || "An error occurred while fetching tasks");
+      toast({
+        title: "Error",
+        description: err.message || "An error occurred while fetching tasks",
+      });
     }
   }, [startDate]);
 
@@ -131,14 +135,6 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
   const handleTaskCreate = (newTask) => {
     setTasks((prevTasks) => [...prevTasks, newTask]);
   };
-
-  if (error) {
-    return (
-      <div role="alert" className="mt-10 rounded-md bg-red-50 p-4 text-red-700">
-        {error}
-      </div>
-    );
-  }
 
   if (!days.length) {
     return null;
