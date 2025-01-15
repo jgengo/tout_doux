@@ -21,9 +21,9 @@ export default function Page() {
           viewDays={viewDays}
         />
       </main>
-      <section className="flex-1 bg-neutral-100 pt-10">
+      {/* <section className="flex-1 bg-neutral-100 pt-10">
         <BrainDump />
-      </section>
+      </section> */}
       <StatusBar viewDays={viewDays} onViewChange={setViewDays} />
     </div>
   );
