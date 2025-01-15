@@ -88,13 +88,13 @@ export default function ProfilePage() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mx-auto max-w-2xl px-4 py-8"
+      className="mx-auto max-w-2xl px-2 py-8"
     >
       <h1 className="mb-8 font-[family-name:var(--font-ibm-plex-sans)] text-3xl font-bold">
         Account
       </h1>
 
-      <div className="px-2 md:border md:p-6 md:shadow-sm">
+      <div className="px-2 md:border md:px-4 md:py-4 md:shadow-sm">
         <div className="space-y-4">
           <div>
             <label className="text-sm font-medium text-muted-foreground">
@@ -122,7 +122,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      <div className="mt-8 space-y-4 px-2 md:border md:p-6 md:shadow-sm">
+      <div className="mt-8 px-2 md:border md:px-4 md:py-4 md:shadow-sm">
         <h2 className="mb-4 font-[family-name:var(--font-ibm-plex-sans)] text-xl font-bold text-destructive">
           Danger Zone
         </h2>

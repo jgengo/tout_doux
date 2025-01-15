@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { DayView } from "@/components/day-view";
+import { useToast } from "@/hooks/use-toast";
 
 const slideVariants = {
   enter: (direction) => ({
@@ -29,6 +30,8 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
   const [days, setDays] = useState([]);
+
+  const { toast } = useToast();
 
   const handleTaskDelete = async (taskId) => {
     try {
@@ -70,7 +73,10 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
         )
       );
     } catch (err) {
-      setError(err.message || "An error occurred while updating task");
+      toast({
+        title: "Error",
+        description: err.message || "An error occurred while updating task",
+      });
     }
   };
 

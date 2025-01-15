@@ -73,6 +73,13 @@ export async function PATCH(req, { params }) {
     const body = await req.json();
     const { text, position, isCompleted } = body;
 
+    if (text !== undefined && text.trim() === "") {
+      return NextResponse.json(
+        { error: "Task text cannot be empty" },
+        { status: 400 }
+      );
+    }
+
     if (
       text === undefined &&
       position === undefined &&
