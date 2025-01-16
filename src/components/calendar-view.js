@@ -211,7 +211,9 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
       {/* Desktop View */}
       <div className="hidden md:block">
         <div
-          className={`grid gap-x-16 rounded-lg bg-white px-6 grid-cols-${viewDays}`}
+          className={`grid gap-x-16 rounded-lg bg-white px-6 grid-cols-${viewDays} ${
+            days.length == 1 && "mx-auto max-w-md"
+          } }`}
         >
           {days.map((day, index) => (
             <DayView

@@ -56,7 +56,6 @@ const TaskItem = ({
           }}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={(e) => {
-            console.log(e.key);
             if (e.key === "Escape") {
               setIsEscapePressed(true);
               onBlur();
