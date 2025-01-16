@@ -240,6 +240,9 @@ const AddTaskForm = () => {
                         <p className="truncate text-sm text-gray-500">
                           {user.email}
                         </p>
+                        <p className="truncate text-xs text-gray-500">
+                          {user.tasks.length} tasks
+                        </p>
                       </div>
                     </div>
                   </div>
