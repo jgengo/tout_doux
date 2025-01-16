@@ -19,6 +19,7 @@ const AddItem = ({ type, date, onSuccess }: AddItemProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const { register, handleSubmit, reset, setFocus } = useForm<FormData>();
+
   const handleAdd = async (data: FormData) => {
     if (!data.text?.trim()) {
       return;
@@ -66,6 +67,12 @@ const AddItem = ({ type, date, onSuccess }: AddItemProps) => {
     }
   };
 
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (e.target.value.trim()) {
+      handleSubmit(handleAdd)();
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(handleAdd)} className="relative py-1">
       <motion.div
@@ -76,6 +83,7 @@ const AddItem = ({ type, date, onSuccess }: AddItemProps) => {
           {...register("text", {
             required: true,
             maxLength: type === "dump" ? 1000 : 100,
+            onBlur: handleBlur,
           })}
           type="text"
           className="w-full rounded bg-transparent text-sm placeholder-gray-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"

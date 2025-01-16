@@ -36,7 +36,7 @@ export default async function Root() {
           <SignIn session={session} />
         </div>
 
-        <p className="mt-16 animate-pulse text-sm opacity-70 transition-opacity hover:opacity-100">
+        <p className="mt-16 text-sm opacity-70 transition-opacity hover:opacity-100">
           Developed by{" "}
           <a
             href="https://jgengo.fr"

@@ -18,6 +18,9 @@ const TaskItem = ({
   onDelete,
   onCheckedChange,
 }: TaskItemProps) => {
+  const [inputValue, setInputValue] = useState(task.text);
+  const [isEscapePressed, setIsEscapePressed] = useState(false);
+
   return (
     <div
       className="group relative flex items-center rounded-md border-b py-1"
@@ -38,8 +41,29 @@ const TaskItem = ({
           type="text"
           defaultValue={task.text}
           className="w-full bg-transparent text-[0.88rem] focus:outline-none"
-          onBlur={onBlur}
-          onKeyDown={(e) => onKeyDown(e, e.currentTarget.value)}
+          onBlur={() => {
+            if (!isEscapePressed && inputValue !== task.text) {
+              onKeyDown(
+                {
+                  key: "Enter",
+                  preventDefault: () => {},
+                } as React.KeyboardEvent,
+                inputValue
+              );
+            }
+            onBlur();
+            setIsEscapePressed(false);
+          }}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={(e) => {
+            console.log(e.key);
+            if (e.key === "Escape") {
+              setIsEscapePressed(true);
+              onBlur();
+            } else if (e.key === "Enter") {
+              onKeyDown(e, inputValue);
+            }
+          }}
           aria-label="Edit task"
           autoFocus
         />
@@ -112,6 +136,10 @@ export const DayView = ({
   ) => {
     if (e.key === "Enter") {
       e.preventDefault();
+      if (newText.trim() === "") {
+        onTaskDelete(taskId);
+        return;
+      }
       onTaskUpdate(taskId, { text: newText });
       handleTaskBlur(taskId);
     }
