@@ -141,96 +141,99 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
   }
 
   return (
-    <section
-      className="group/section mt-10 space-y-4"
-      aria-label="Calendar View"
-    >
-      <div className="hidden items-center justify-between px-4 md:flex">
-        <div className="bg-neutral-100 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100">
-          <button
-            onClick={() => onDateChange(addDays(startDate, -1))}
-            className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100"
-            aria-label="Previous week"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => onDateChange(addDays(startDate, -5))}
-            className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100"
-            aria-label="Previous week"
-          >
-            <ChevronsLeft className="h-4 w-4" />
-          </button>
+    <>
+      <section
+        className={`group/section mt-10 flex w-full flex-row gap-1 px-6 ${days.length == 1 && "mx-auto max-w-md"}`}
+      >
+        <div className="flex flex-col items-center">
+          <div className="bg-neutral-100 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100">
+            <button
+              onClick={() => onDateChange(addDays(startDate, -1))}
+              className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100"
+              aria-label="Previous week"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => onDateChange(addDays(startDate, -5))}
+              className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100"
+              aria-label="Previous week"
+            >
+              <ChevronsLeft className="h-4 w-4" />
+            </button>
+          </div>
         </div>
-        <div className="bg-neutral-100 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100">
-          <button
-            onClick={() => onDateChange(addDays(startDate, 1))}
-            className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100"
-            aria-label="Next week"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-          <button
-            onClick={() => onDateChange(addDays(startDate, 5))}
-            className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100"
-            aria-label="Next week"
-          >
-            <ChevronsRight className="h-5 w-5" />
-          </button>
-        </div>
-      </div>
+        <div className="w-full">
+          <div className="md:hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={days[0].dayNumber}
+                className="rounded-lg bg-white px-6"
+                initial="enter"
+                animate="center"
+                exit="exit"
+                variants={slideVariants}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              >
+                <DayView
+                  dayNumber={days[0].dayNumber}
+                  dayName={days[0].dayName}
+                  date={days[0].date}
+                  isToday={isToday(days[0].date)}
+                  index={0}
+                  isMobile={true}
+                  tasks={days[0].tasks}
+                  onTaskDelete={handleTaskDelete}
+                  onTaskUpdate={handleTaskUpdate}
+                  onTaskCreate={handleTaskCreate}
+                />
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
-      {/* Mobile View */}
-      <div className="md:hidden">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={days[0].dayNumber}
-            className="rounded-lg bg-white px-6"
-            initial="enter"
-            animate="center"
-            exit="exit"
-            variants={slideVariants}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <DayView
-              dayNumber={days[0].dayNumber}
-              dayName={days[0].dayName}
-              date={days[0].date}
-              isToday={isToday(days[0].date)}
-              index={0}
-              isMobile={true}
-              tasks={days[0].tasks}
-              onTaskDelete={handleTaskDelete}
-              onTaskUpdate={handleTaskUpdate}
-              onTaskCreate={handleTaskCreate}
-            />
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Desktop View */}
-      <div className="hidden md:block">
-        <div
-          className={`grid gap-x-16 rounded-lg bg-white px-6 grid-cols-${viewDays} ${
-            days.length == 1 && "mx-auto max-w-md"
-          } }`}
-        >
-          {days.map((day, index) => (
-            <DayView
-              key={day.dayNumber}
-              date={day.date}
-              dayNumber={day.dayNumber}
-              dayName={day.dayName}
-              isToday={isToday(day.date)}
-              index={index}
-              tasks={day.tasks}
-              onTaskDelete={handleTaskDelete}
-              onTaskUpdate={handleTaskUpdate}
-              onTaskCreate={handleTaskCreate}
-            />
-          ))}
+          {/* Desktop View */}
+          <div className="hidden md:block">
+            <div
+              className={`grid gap-x-16 rounded-lg bg-white px-6 grid-cols-${viewDays} ${
+                days.length == 1 && "mx-auto max-w-md"
+              } }`}
+            >
+              {days.map((day, index) => (
+                <DayView
+                  key={day.dayNumber}
+                  date={day.date}
+                  dayNumber={day.dayNumber}
+                  dayName={day.dayName}
+                  isToday={isToday(day.date)}
+                  index={index}
+                  tasks={day.tasks}
+                  onTaskDelete={handleTaskDelete}
+                  onTaskUpdate={handleTaskUpdate}
+                  onTaskCreate={handleTaskCreate}
+                />
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+        <div className="flex flex-col items-center">
+          <div className="bg-neutral-100 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100">
+            <button
+              onClick={() => onDateChange(addDays(startDate, 1))}
+              className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100"
+              aria-label="Next week"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => onDateChange(addDays(startDate, 5))}
+              className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100"
+              aria-label="Next week"
+            >
+              <ChevronsRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
