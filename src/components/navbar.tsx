@@ -28,7 +28,7 @@ const Navbar = ({ currentDate, onDateChange }: NavbarProps): JSX.Element => {
                 </h1>
               </TooltipTrigger>
               <TooltipContent className="translate-x-10 bg-primary/80 text-xs">
-                <p>/tu du/ adjective — (French) very soft.</p>
+                <div>/tu du/ adjective — (French) very soft.</div>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
