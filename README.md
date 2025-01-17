@@ -24,12 +24,11 @@
 
 - 🎯 Minimalist task management
 - 📱 Responsive design (mobile & desktop)
-- 🧠 Brain dump section for quick thoughts
 - 🎨 Clean, animation-rich UI
 - 🔐 Google authentication
 - 📅 Flexible calendar view (1, 3, 5, or 7 days)
 - 💾 Persistent view preferences
-- 🌙 Dark mode support (coming soon)
+- 🌙 Dark mode support
 
 ## Tech Stack
 
