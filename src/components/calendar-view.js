@@ -143,7 +143,7 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
   return (
     <>
       <section
-        className={`group/section mt-24 flex w-full flex-row gap-1 px-6 ${days.length == 1 && "mx-auto max-w-lg"}`}
+        className={`group/section mt-24 flex w-full flex-row px-6 ${days.length == 1 && "mx-auto max-w-lg"}`}
       >
         <div className="hidden flex-col gap-1 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100 md:flex">
           <button
@@ -167,7 +167,7 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
             <AnimatePresence mode="wait">
               <motion.div
                 key={days[0].dayNumber}
-                className="rounded-lg bg-background px-6"
+                className="rounded-lg bg-background px-3"
                 initial="enter"
                 animate="center"
                 exit="exit"
@@ -193,7 +193,7 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
           {/* Desktop View */}
           <div className="hidden md:block">
             <div
-              className={`grid gap-x-16 rounded-lg bg-background px-6 grid-cols-${viewDays} ${
+              className={`grid gap-x-16 rounded-lg bg-background px-3 grid-cols-${viewDays} ${
                 days.length == 1 && "mx-auto max-w-md"
               } }`}
             >

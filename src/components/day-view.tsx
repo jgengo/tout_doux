@@ -157,7 +157,7 @@ export const DayView = ({
       >
         {dayName}
       </div>
-      <div className="mt-4 space-y-1" role="list">
+      <div className="mt-6 space-y-1" role="list">
         {[...tasks]
           .sort((a, b) => {
             // First sort by completion status
