@@ -145,7 +145,7 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
       <section
         className={`group/section mt-24 flex w-full flex-row gap-1 px-6 ${days.length == 1 && "mx-auto max-w-lg"}`}
       >
-        <div className="flex flex-col gap-1 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100">
+        <div className="hidden flex-col gap-1 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100 md:flex">
           <button
             onClick={() => onDateChange(addDays(startDate, -1))}
             className="hover:bg-accentHover flex h-8 w-8 items-center justify-center rounded-md bg-accent"
@@ -215,7 +215,7 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100">
+        <div className="hidden flex-col gap-1 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100 md:flex">
           <button
             onClick={() => onDateChange(addDays(startDate, 1))}
             className="hover:bg-accentHover flex h-8 w-8 items-center justify-center rounded-md bg-accent"

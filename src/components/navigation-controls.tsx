@@ -65,7 +65,7 @@ const NavigationControls = ({
           aria-label={label}
           size="icon"
           variant="ghost"
-          className="text-gray-600/85 hover:bg-transparent hover:text-black dark:text-gray-400/85 dark:hover:text-white"
+          className="text-neutral-500 hover:bg-transparent hover:text-foreground"
         >
           {icon}
         </Button>
