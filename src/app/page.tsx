@@ -28,7 +28,7 @@ export default async function Root() {
           alt="Toutdoux screenshot"
           width={600}
           height={400}
-          className="mt-10 rounded-md border border-primary/20 p-4 shadow-sm"
+          className="mt-10 rounded-md border border-primary/20 bg-white p-4 shadow-sm"
         />
 
         <div className="mt-10 flex flex-col items-center justify-center gap-2">

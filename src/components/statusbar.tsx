@@ -6,7 +6,7 @@ import { signOut } from "next-auth/react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-
+import { ModeToggle } from "@/components/theme-toggle";
 interface StatusBarProps {
   viewDays: number;
   onViewChange: React.Dispatch<React.SetStateAction<number>>;
@@ -30,7 +30,7 @@ const StatusBar = ({ viewDays, onViewChange }: StatusBarProps) => {
   };
 
   return (
-    <div className="sticky bottom-0 flex h-10 items-center justify-between border-t border-neutral-200 bg-white px-4">
+    <div className="sticky bottom-0 flex h-12 items-center justify-between border-t bg-background px-6">
       <div className="invisible flex items-center gap-2 md:visible">
         {viewOptions.map((option) => (
           <Button
@@ -47,6 +47,7 @@ const StatusBar = ({ viewDays, onViewChange }: StatusBarProps) => {
       </div>
 
       <div className="flex items-center gap-4">
+        <ModeToggle />
         <Link
           href="/me"
           className="inline-flex h-8 w-8 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
