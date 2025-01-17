@@ -143,7 +143,7 @@ export const CalendarView = ({ startDate, onDateChange, viewDays }) => {
   return (
     <>
       <section
-        className={`group/section mt-10 flex w-full flex-row gap-1 px-6 ${days.length == 1 && "mx-auto max-w-md"}`}
+        className={`group/section mt-24 flex w-full flex-row gap-1 px-6 ${days.length == 1 && "mx-auto max-w-lg"}`}
       >
         <div className="flex flex-col items-center">
           <div className="bg-neutral-100 opacity-0 transition-opacity duration-300 group-hover/section:opacity-100">
