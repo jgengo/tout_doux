@@ -101,7 +101,6 @@ const TaskItem = ({
   );
 };
 
-// Main Component
 export const DayView = ({
   dayNumber,
   dayName,
@@ -185,6 +184,9 @@ export const DayView = ({
             <AddItem type="task" date={date} onSuccess={onTaskCreate} />
           </div>
         ))}
+        <div className="rounded-md border-b">
+          <AddItem type="task" date={date} onSuccess={onTaskCreate} />
+        </div>
       </div>
     </div>
   );
