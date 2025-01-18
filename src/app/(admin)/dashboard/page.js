@@ -1,19 +1,7 @@
-"use client";
+import { getUsers } from "@/actions/users";
 
-import { useState, useEffect } from "react";
-
-const AddTaskForm = () => {
-  const [users, setUsers] = useState([]);
-
-  const fetchUsers = async () => {
-    const response = await fetch("/api/users");
-    const data = await response.json();
-    setUsers(data);
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+const AddTaskForm = async () => {
+  const users = await getUsers();
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">

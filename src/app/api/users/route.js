@@ -1,6 +1,7 @@
-import User from "@/models/User";
-import { auth } from "@/auth";
 import { NextResponse } from "next/server";
+
+import { auth } from "@/auth";
+import User from "@/models/User";
 import connectMongo from "@/libs/mongoose";
 
 export async function GET() {
