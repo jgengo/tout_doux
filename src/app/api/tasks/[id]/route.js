@@ -56,6 +56,7 @@ export async function DELETE(req, { params }) {
 
 export async function PATCH(req, { params }) {
   try {
+    // Validate request
     const { id } = params;
     if (!id) {
       return NextResponse.json(
@@ -64,14 +65,14 @@ export async function PATCH(req, { params }) {
       );
     }
 
+    // Check authentication
     const session = await auth();
-
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body = await req.json();
-    const { text, position, isCompleted } = body;
+    // Parse and validate body
+    const { text, position, isCompleted } = await req.json();
 
     if (text !== undefined && text.trim() === "") {
       return NextResponse.json(
@@ -80,37 +81,59 @@ export async function PATCH(req, { params }) {
       );
     }
 
-    if (
-      text === undefined &&
-      position === undefined &&
-      isCompleted === undefined
-    ) {
+    if (!text && position === undefined && isCompleted === undefined) {
       return NextResponse.json(
         { error: "No valid fields to update" },
         { status: 400 }
       );
     }
 
+    // Connect and fetch data
     await connectMongo();
-
     const task = await Task.findById(id);
-
     if (!task) {
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
     }
 
     const user = await User.findById(session.user.id);
-
-    // Allow updates if user owns the task or is admin
     if (!user.tasks.includes(task._id) && !user.isAdmin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const updateFields = {};
-    if (text !== undefined) updateFields.text = text;
-    if (position !== undefined) updateFields.position = position;
-    if (isCompleted !== undefined) updateFields.isCompleted = isCompleted;
+    // Prepare update fields
+    const updateFields = {
+      ...(text !== undefined && { text }),
+      ...(isCompleted !== undefined && { isCompleted }),
+      ...(position !== undefined && { position }),
+    };
 
+    // Handle position updates if needed
+    if (position !== undefined) {
+      const query = {
+        userId: user._id,
+        date: task.date,
+      };
+
+      if (position < task.position) {
+        await Task.updateMany(
+          {
+            ...query,
+            position: { $gte: position, $lt: task.position },
+          },
+          { $inc: { position: 1 } }
+        );
+      } else if (position > task.position) {
+        await Task.updateMany(
+          {
+            ...query,
+            position: { $gt: task.position, $lte: position },
+          },
+          { $inc: { position: -1 } }
+        );
+      }
+    }
+
+    // Update and return task
     const updatedTask = await Task.findByIdAndUpdate(
       id,
       { $set: updateFields },
@@ -118,8 +141,8 @@ export async function PATCH(req, { params }) {
     );
 
     return NextResponse.json(updatedTask, { status: 200 });
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error("Failed to update task:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
