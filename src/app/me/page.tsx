@@ -3,7 +3,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Loader2, AlertTriangle } from "lucide-react";
+import { Loader2, AlertTriangle, ArrowLeft } from "lucide-react";
+
+import { Brand } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -86,83 +88,101 @@ export default function ProfilePage() {
   );
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="mx-auto max-w-lg px-2 py-8"
-    >
-      <div className="px-2 md:shadow-sm">
-        <h2 className="mb-5 text-xl font-bold">Account information</h2>
-        <div className="space-y-4">
-          <ProfileField label="Name" value={user?.name || "N/A"} />
-          <ProfileField label="Email" value={user?.email || "N/A"} />
-          <ProfileField
-            label="Member Since"
-            value={
-              user?.createdAt
-                ? new Date(user.createdAt).toLocaleDateString()
-                : "N/A"
-            }
-          />
-        </div>
-      </div>
+    <>
+      <header
+        role="banner"
+        className="sticky top-0 z-50 flex items-center justify-between border-t-2 border-primary bg-background px-5"
+        aria-label="Main navigation"
+      >
+        <Brand />
 
-      <div className="mt-14">
-        <div className="flex items-center justify-between gap-8 px-2 md:gap-5">
-          <div>
-            <h2 className="mb-2 text-xl font-bold text-destructive">
-              Danger Zone
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Deleting your account will remove all your information from our
-              servers.
-            </p>
+        <Button
+          variant="ghost"
+          onClick={() => window.history.back()}
+          aria-label="Go back to previous page"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </Button>
+      </header>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mx-auto max-w-xl px-2 py-8"
+      >
+        <div className="px-2 md:shadow-sm">
+          <h2 className="mb-5 text-xl font-bold">Account information</h2>
+          <div className="space-y-4">
+            <ProfileField label="Name" value={user?.name || "N/A"} />
+            <ProfileField label="Email" value={user?.email || "N/A"} />
+            <ProfileField
+              label="Member Since"
+              value={
+                user?.createdAt
+                  ? new Date(user.createdAt).toLocaleDateString()
+                  : "N/A"
+              }
+            />
           </div>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button
-                variant="destructive"
-                className="mt-4"
-                aria-label="Delete account"
-              >
-                Delete Account
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Are you sure?</DialogTitle>
-                <DialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove all your data from our servers.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => setIsDialogOpen(false)}
-                  disabled={isDeleting}
-                >
-                  Cancel
-                </Button>
+        </div>
+
+        <div className="mt-14">
+          <div className="flex items-center justify-between gap-8 px-2 md:gap-5">
+            <div>
+              <h2 className="mb-2 text-xl font-bold text-destructive">
+                Danger Zone
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                Deleting your account will remove all your information from our
+                servers.
+              </p>
+            </div>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
                 <Button
                   variant="destructive"
-                  onClick={handleDeleteAccount}
-                  disabled={isDeleting}
+                  className="mt-4"
+                  aria-label="Delete account"
                 >
-                  {isDeleting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Deleting...
-                    </>
-                  ) : (
-                    "Delete Account"
-                  )}
+                  Delete Account
                 </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Are you sure?</DialogTitle>
+                  <DialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    your account and remove all your data from our servers.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsDialogOpen(false)}
+                    disabled={isDeleting}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    onClick={handleDeleteAccount}
+                    disabled={isDeleting}
+                  >
+                    {isDeleting ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Deleting...
+                      </>
+                    ) : (
+                      "Delete Account"
+                    )}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </>
   );
 }
