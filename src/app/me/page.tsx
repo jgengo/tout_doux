@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader2, AlertTriangle } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,6 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { deleteMe } from "@/actions/users";
 
 interface UserProfile {
   name: string;
@@ -30,29 +30,27 @@ export default function ProfilePage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const fetchUserProfile = async () => {
-    try {
-      const response = await fetch("/api/me");
-      if (!response.ok) throw new Error("Failed to fetch profile");
-      const data = await response.json();
-      setUser(data);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to load profile data");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetch("/api/me");
+        if (!response.ok) throw new Error("Failed to fetch profile");
+        setUser(await response.json());
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load profile data");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const handleDeleteAccount = async () => {
     try {
       setIsDeleting(true);
-      const response = await fetch("/api/me", {
-        method: "DELETE",
-      });
-
-      if (!response.ok) throw new Error("Failed to delete account");
-
+      await deleteMe();
       router.push("/");
     } catch (err) {
       console.error(err);
@@ -60,10 +58,6 @@ export default function ProfilePage() {
       setIsDeleting(false);
     }
   };
-
-  useEffect(() => {
-    fetchUserProfile();
-  }, []);
 
   if (isLoading) {
     return (
@@ -84,95 +78,90 @@ export default function ProfilePage() {
     );
   }
 
+  const ProfileField = ({ label, value }: { label: string; value: string }) => (
+    <div className="flex items-center justify-between border-b border-muted pb-1">
+      <label className="text-sm font-bold">{label}</label>
+      <p>{value}</p>
+    </div>
+  );
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mx-auto max-w-2xl px-2 py-8"
+      className="mx-auto max-w-lg px-2 py-8"
     >
-      <h1 className="mb-8 font-[family-name:var(--font-ibm-plex-sans)] text-3xl font-bold">
-        Account
-      </h1>
-
-      <div className="px-2 md:border md:px-4 md:py-4 md:shadow-sm">
+      <div className="px-2 md:shadow-sm">
+        <h2 className="mb-5 text-xl font-bold">Account information</h2>
         <div className="space-y-4">
-          <div>
-            <label className="text-sm font-medium text-muted-foreground">
-              Name
-            </label>
-            <p className="mt-1 text-lg">{user?.name}</p>
-          </div>
-
-          <div>
-            <label className="text-sm font-medium text-muted-foreground">
-              Email
-            </label>
-            <p className="mt-1 text-lg">{user?.email}</p>
-          </div>
-
-          <div>
-            <label className="text-sm font-medium text-muted-foreground">
-              Member Since
-            </label>
-            <p className="mt-1 text-lg">
-              {user?.createdAt
+          <ProfileField label="Name" value={user?.name || "N/A"} />
+          <ProfileField label="Email" value={user?.email || "N/A"} />
+          <ProfileField
+            label="Member Since"
+            value={
+              user?.createdAt
                 ? new Date(user.createdAt).toLocaleDateString()
-                : "N/A"}
-            </p>
-          </div>
+                : "N/A"
+            }
+          />
         </div>
       </div>
-      <div className="mt-8 px-2 md:border md:px-4 md:py-4 md:shadow-sm">
-        <h2 className="mb-4 font-[family-name:var(--font-ibm-plex-sans)] text-xl font-bold text-destructive">
-          Danger Zone
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          Deleting your account will remove all your information from our
-          servers.
-        </p>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button
-              variant="destructive"
-              className="mt-8"
-              aria-label="Delete account"
-            >
-              Delete Account
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Are you sure?</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove all your data from our servers.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setIsDialogOpen(false)}
-                disabled={isDeleting}
-              >
-                Cancel
-              </Button>
+
+      <div className="mt-14">
+        <div className="flex items-center justify-between gap-8 px-2 md:gap-5">
+          <div>
+            <h2 className="mb-2 text-xl font-bold text-destructive">
+              Danger Zone
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Deleting your account will remove all your information from our
+              servers.
+            </p>
+          </div>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
               <Button
                 variant="destructive"
-                onClick={handleDeleteAccount}
-                disabled={isDeleting}
+                className="mt-4"
+                aria-label="Delete account"
               >
-                {isDeleting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Deleting...
-                  </>
-                ) : (
-                  "Delete Account"
-                )}
+                Delete Account
               </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Are you sure?</DialogTitle>
+                <DialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove all your data from our servers.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsDialogOpen(false)}
+                  disabled={isDeleting}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={handleDeleteAccount}
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Deleting...
+                    </>
+                  ) : (
+                    "Delete Account"
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     </motion.div>
   );
