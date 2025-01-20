@@ -106,8 +106,9 @@ export default function ProfilePage() {
         </Button>
       </header>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
         className="mx-auto max-w-xl px-2 py-8"
       >
         <div className="px-2 md:shadow-sm">
