@@ -1,6 +1,6 @@
 import { getUsers } from "@/actions/users";
 
-const AddTaskForm = async () => {
+const Dashboard = async () => {
   const users = await getUsers();
 
   return (
@@ -35,7 +35,7 @@ const AddTaskForm = async () => {
                           {user.email}
                         </p>
                         <p className="truncate text-xs text-gray-500">
-                          {user.tasks.length} tasks
+                          {user.tasks?.length || 0} tasks
                         </p>
                       </div>
                     </div>
@@ -60,4 +60,4 @@ const AddTaskForm = async () => {
   );
 };
 
-export default AddTaskForm;
+export default Dashboard;
